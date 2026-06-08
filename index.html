@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="VAUR">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>CleanInv — Inventario de Limpieza</title>
+<title>VAUR — Inventario de Limpieza</title>
 <!-- Librerías de escaneo / exportación (se cachean para uso offline) -->
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
@@ -479,24 +479,24 @@ svg.bi{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
   #topbar,#tabs,#pages,#toast,#modal,#sheet,#lb{display:none!important}
   #printRoot{display:block!important;position:static;padding:0}
   @page{margin:14mm 12mm}
-  .pr-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #274D45;padding-bottom:14px;margin-bottom:6px}
-  .pr-mark{width:54px;height:54px;border-radius:10px;background:#274D45;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-  .pr-mark.pr-logo{background:#fff;border:1px solid #cfd8d3;padding:4px}
+  .pr-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #1A1A1A;padding-bottom:14px;margin-bottom:6px}
+  .pr-mark{width:54px;height:54px;border-radius:10px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+  .pr-mark.pr-logo{background:#fff;border:1px solid #cccccc;padding:4px}
   .pr-mark svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .pr-title{flex:1}
-  .pr-title h1{font-size:21px;color:#1F3D37;margin:0;letter-spacing:-.3px}
-  .pr-title p{font-size:12px;color:#5E6B64;margin:3px 0 0}
-  .pr-meta{text-align:right;font-size:11px;color:#5E6B64;line-height:1.6}
-  .pr-sum{display:flex;gap:24px;margin:14px 0 18px;font-size:12px;color:#333}
-  .pr-sum b{display:block;font-size:20px;color:#274D45}
+  .pr-title h1{font-size:21px;color:#1A1A1A;margin:0;letter-spacing:-.3px}
+  .pr-title p{font-size:12px;color:#666666;margin:3px 0 0}
+  .pr-meta{text-align:right;font-size:11px;color:#666666;line-height:1.6}
+  .pr-sum{display:flex;gap:24px;margin:14px 0 18px;font-size:12px;color:#333333}
+  .pr-sum b{display:block;font-size:20px;color:#2B6CA3}
   .pr-sum .pr-zero b{color:#b91c1c}
   .pr-sum .pr-zero{color:#b91c1c}
   .pr-sum .pr-exp b{color:#b45309}
   .pr-sum .pr-exp{color:#b45309}
   table.pr{width:100%;border-collapse:collapse;font-size:10.5px}
-  table.pr th{background:#274D45;color:#fff;text-align:left;padding:7px 8px;font-weight:700;border:1px solid #274D45}
-  table.pr td{padding:7px 8px;border:1px solid #cfd8d3;vertical-align:top;color:#222}
-  table.pr tr:nth-child(even) td{background:#f2f5f3}
+  table.pr th{background:#C3D7E6;color:#1C3A52;text-align:left;padding:7px 8px;font-weight:700;border:1px solid #A9C2D4}
+  table.pr td{padding:7px 8px;border:1px solid #D7E0E7;vertical-align:top;color:#222222}
+  table.pr tr:nth-child(even) td{background:#ffffff}
   table.pr tr.zero td{background:#fdecec!important;color:#b91c1c}
   table.pr tr.zero td.qcell{font-weight:800;color:#b91c1c}
   table.pr tr.exp td{background:#fff3e6!important;color:#b45309}
@@ -504,14 +504,22 @@ svg.bi{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
   table.pr td.qcell{text-align:right;font-variant-numeric:tabular-nums}
   table.pr .seg{font-weight:700}
   table.pr .pr-num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
-  .pr-foot{margin-top:16px;font-size:9.5px;color:#8a948f;border-top:1px solid #cfd8d3;padding-top:8px;text-align:center}
+  .pr-foot{margin-top:16px;font-size:9.5px;color:#8A8A8A;border-top:1px solid #D7E0E7;padding-top:8px;text-align:center}
   tr{page-break-inside:avoid}
 }
-/* ── v15: sombreados de formulario ── */
-.fg-cats{background:#E9F5C9;border:1px solid #D6EAB0;border-radius:14px;padding:12px 12px 10px}
-.fg-uso{background:#D6F1EF;border:1px solid #BDE6E3;border-radius:14px;padding:12px 12px 10px}
-body.dark .fg-cats{background:#2A3320;border-color:#3A4A2A}
-body.dark .fg-uso{background:#15302E;border-color:#22433F}
+/* ── v15: sombreado solo en la palabra (no en las opciones) ── */
+.fg-cats{margin-bottom:14px}
+.fg-uso{margin-bottom:14px}
+.fg-cats>label{background:#DDF1AE;color:#3A4A1E;padding:5px 12px;border-radius:9px;display:inline-block}
+.fg-uso>label{background:#C7ECE9;color:#15463F;padding:5px 12px;border-radius:9px;display:inline-block}
+body.dark .fg-cats>label{background:#2E3A1C;color:#D8E9B0}
+body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
+.otros-input{width:100%;margin-top:9px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:var(--sf);color:var(--ink);font-size:15px}
+/* ── botones directos de compra (Amazon / Google) ── */
+.buybtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.buybtns .btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;padding:13px 10px;font-weight:700;border:none}
+.buy-amazon{background:#FF9900;color:#1A1A1A}
+.buy-google{background:#1A73E8;color:#FFFFFF}
 /* ── v15: barra exportar e inventario ── */
 .invbar3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:8px}
 .invbar3 .btn{font-size:14px;padding:11px}
@@ -533,7 +541,7 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
     <div class="mark">
       <svg viewBox="0 0 24 24"><path d="M3 7h13l1.5 4H21a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/><path d="M3 7v9a1 1 0 0 0 1 1h1"/><circle cx="8" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M7 7V4h6v3"/></svg>
     </div>
-    <div class="wm"><b>CleanInv</b><small>Inventario de limpieza</small></div>
+    <div class="wm"><b>VAUR</b><small>Inventario de limpieza</small></div>
   </div>
   <span id="badge">0</span>
   <button class="tbtn" onclick="openSheet()" aria-label="Compartir y exportar" title="Compartir y exportar">
@@ -614,10 +622,11 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
       <label>Tipo</label>
       <div class="chips" id="tipoChips">
         <span class="chip" id="tp-Producto" onclick="setTipo('Producto',this)">Producto</span>
-        <span class="chip" id="tp-Equipo" onclick="setTipo('Equipo',this)">Equipo</span>
         <span class="chip" id="tp-Herramienta" onclick="setTipo('Herramienta',this)">Herramienta</span>
+        <span class="chip" id="tp-Equipo" onclick="setTipo('Equipo',this)">Equipo</span>
         <span class="chip" id="tp-Otros" onclick="setTipo('Otros',this)">Otros</span>
       </div>
+      <input type="text" id="tipoOtros" class="otros-input" placeholder="Escribe el tipo…" style="display:none">
     </div>
     <div class="fg">
       <label>Cantidad comprada</label>
@@ -720,19 +729,19 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
   <!-- FRECUENCIA DE COMPRAS -->
   <div class="card">
     <div class="sec ic-b"><svg class="ico" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Frecuencia de Compras</div>
-    <div class="pseg" id="periodSeg">
-      <button class="pbtn" data-d="7" onclick="setStatPeriod(7,this)">Semana</button>
-      <button class="pbtn on" data-d="30" onclick="setStatPeriod(30,this)">Mes</button>
-      <button class="pbtn" data-d="90" onclick="setStatPeriod(90,this)">3 meses</button>
-      <button class="pbtn" data-d="365" onclick="setStatPeriod(365,this)">Año</button>
-    </div>
-    <div id="topBuyB"></div>
+    <p class="note" style="margin:0 0 10px">Elige el periodo y descarga el reporte (incluye precio y total). El archivo sale ordenado de la A a la Z:</p>
+    <div class="selwrap"><select id="freqSel" onchange="statPeriod=Number(this.value)">
+      <option value="7">Semana</option>
+      <option value="30" selected>Mes</option>
+      <option value="90">3 meses</option>
+      <option value="180">6 meses</option>
+      <option value="365">1 año</option>
+    </select></div>
     <div class="exprow">
       <button class="btn btn-o" onclick="out('freq','pdf')">PDF</button>
       <button class="btn btn-o" onclick="out('freq','xlsx')">Excel</button>
       <button class="btn btn-o" onclick="out('freq','send')">Enviar</button>
     </div>
-    <div class="exptip">Incluye precio y total gastado del periodo elegido.</div>
   </div>
 
   <!-- COMPRAS RECURRENTES -->
@@ -871,7 +880,7 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
     <div id="catHelp" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 18 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 20 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -954,18 +963,18 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
    CONSTANTES
 ═══════════════════════════════════════════════════════ */
 const CATS = [
-  "Alfombras","Baños","Electrodomésticos","Muebles-Estantería",
+  "Alfombras y Tapizados","Baños","Electrodomésticos","Muebles-Estantería",
   "Persianas o Cortinas","Pisos y Superficies","Techo","Vidrio"
 ];
 const USO = {
-  "Alfombras":["Alfombras","Tapetes","Tapizados","Asientos de auto","Colchones","Sofás"],
-  "Baños":["Inodoros","Lavamanos","Duchas y bañeras","Azulejos","Juntas de cerámica","Grifería"],
-  "Electrodomésticos":["Refrigeradoras","Microondas","Lavadoras","Hornos","Aire acondicionado","Estufas"],
-  "Muebles-Estantería":["Muebles de madera","Estanterías","Repisas","Molduras","Puertas","Closets"],
-  "Persianas o Cortinas":["Cortinas de tela","Cortinas de baño","Persianas","Visillos","Black-out","Estores"],
-  "Pisos y Superficies":["Pisos cerámicos","Pisos vinílicos","Pisos de madera","Granito","Mármol","Cemento","Mesones"],
-  "Techo":["Cielo raso","Techos interiores","Vigas","Tumbado","Molduras de techo"],
-  "Vidrio":["Ventanas","Espejos","Mamparas de vidrio","Vitrinas","Parabrisas"]
+  "Alfombras y Tapizados":["Alfombras","Asientos de auto","Colchones","Sofás","Tapetes","Tapizados"],
+  "Baños":["Azulejos","Duchas y bañeras","Grifería","Inodoros","Juntas de cerámica","Lavamanos"],
+  "Electrodomésticos":["Aire acondicionado","Estufa o Cocina","Extractor","Hornos","Lavadoras","Microondas","Nevera o Refrigerador","Secadora"],
+  "Muebles-Estantería":["Closets","Estanterías","Molduras","Muebles de madera","Puertas","Repisas"],
+  "Persianas o Cortinas":["Black-out","Cortinas de baño","Cortinas de tela","Estores","Persianas","Visillos"],
+  "Pisos y Superficies":["Cemento","Fregadero","Granito","Mármol","Mesones","Pisos cerámicos","Pisos de madera","Pisos vinílicos"],
+  "Techo":["Cielo raso","Molduras de techo","Techos interiores","Tumbado","Vigas"],
+  "Vidrio":["Espejos","Mamparas de vidrio","Parabrisas","Ventanas","Vitrinas"]
 };
 const SEG_HINT = {
   "Bajo":"Sin EPP requerido. Lavarse las manos al terminar.",
@@ -975,7 +984,7 @@ const SEG_HINT = {
 };
 const SEG_TAGCLS = {Bajo:"s-bajo",Moderado:"s-mod",Alto:"s-alto",Corrosivo:"s-cor"};
 const CAT_CLS = {
-  "Alfombras":"t-sand","Baños":"t-blue",
+  "Alfombras y Tapizados":"t-sand","Baños":"t-blue",
   "Electrodomésticos":"t-mauv","Muebles-Estantería":"t-clay",
   "Persianas o Cortinas":"t-rose","Pisos y Superficies":"t-sage",
   "Techo":"t-sand","Vidrio":"t-blue"
@@ -985,10 +994,10 @@ const PRES = ["Onzas","Mililitros","Litros","Galón","Barril","Kilogramos","Gram
 /* ═══════════════════════════════════════════════════════
    ESTADO
 ═══════════════════════════════════════════════════════ */
-let DB=[], photos=[], selCats=[], selUsos=[], selSeg='', curCode='', editingId=null;
+let DB=[], photos=[], selCats=[], selUsos=[], selSeg='', curCode='', editingId=null, otrosOn=false;
 let selTipo='Producto', statPeriod=30, AJ={};
 let filterCat='';
-const TIPOS=['Producto','Equipo','Herramienta','Otros'];
+const TIPOS=['Producto','Herramienta','Equipo','Otros'];
 function prodKey(nom,mar,pre){ return (nom||'').trim().toLowerCase()+'|'+(mar||'').trim().toLowerCase()+'|'+(pre||'').trim().toLowerCase(); }
 function evTs(f){ if(typeof f==='number') return f; const t=Date.parse(f); return isNaN(t)?Date.now():t; }
 let camOn=false, mStream=null, scanIv=null, scanMode='bar', decoding=false, modalId=null;
@@ -1039,6 +1048,7 @@ async function loadDB(){
 function normalize(p){
   // Compatibilidad con datos antiguos
   let cats=p.categorias;
+  if(typeof cats==='string') cats=cats.split(',').map(s=>s.trim()).filter(Boolean);
   if(!Array.isArray(cats)) cats=p.categoria?[p.categoria]:[];
   let usos=p.usoAdecuado;
   if(Array.isArray(usos)) usos=usos.join(', ');
@@ -1056,7 +1066,7 @@ function normalize(p){
     nombre:p.nombre||'(sin nombre)',
     marca:p.marca||'',
     presentacion:p.presentacion||'',
-    tipo:TIPOS.includes(p.tipo)?p.tipo:'Producto',
+    tipo:(typeof p.tipo==='string'&&p.tipo.trim())?p.tipo.trim():'Producto',
     expira:p.expira||'',
     cantidad:cant,
     categorias:cats,
@@ -1251,9 +1261,9 @@ function renderPhotos(){
    CATEGORÍAS (multiselección) + USO
 ═══════════════════════════════════════════════════════ */
 function buildCatChips(){
-  const box=document.getElementById('catChips'); box.innerHTML='';
+  const box=document.getElementById('catChips'); if(!box) return; box.innerHTML='';
   CATS.forEach(cat=>{
-    const el=document.createElement('span'); el.className='chip'; el.textContent=cat;
+    const el=document.createElement('span'); el.className='chip'+(selCats.includes(cat)?' cat-on':''); el.textContent=cat;
     el.addEventListener('click',function(){
       if(this.classList.contains('cat-on')){ this.classList.remove('cat-on'); selCats=selCats.filter(c=>c!==cat); }
       else { this.classList.add('cat-on'); selCats.push(cat); }
@@ -1264,12 +1274,15 @@ function buildCatChips(){
 }
 function fillPresUnits(){
   const sel=document.getElementById('fPreUnit'); if(!sel) return;
-  sel.innerHTML='<option value="">Unidad…</option>'+PRES.map(u=>'<option value="'+u+'">'+u+'</option>').join('');
+  sel.innerHTML='<option value="">Unidad…</option>'+PRES.slice().sort((a,b)=>a.localeCompare(b,'es')).map(u=>'<option value="'+u+'">'+u+'</option>').join('');
 }
 function buildInvCats(){
   const sel=document.getElementById('invCatSel'); if(!sel) return;
+  var set={}; CATS.forEach(function(c){ set[c]=1; });
+  DB.forEach(function(p){ catsArr(p).forEach(function(c){ if(c) set[c]=1; }); });
+  var all=Object.keys(set).sort(function(a,b){ return a.localeCompare(b,'es'); });
   sel.innerHTML='<option value="">Todas las categorías</option>'+
-    CATS.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');
+    all.map(function(c){ return '<option value="'+esc(c)+'">'+esc(c)+'</option>'; }).join('');
   sel.value=filterCat;
 }
 function setInvCat(cat){ filterCat=cat||''; renderInv(); }
@@ -1295,6 +1308,7 @@ function buildUsoChips(){
   const grp=document.getElementById('usoGroup'), chp=document.getElementById('usoChips');
   // Unir usos de todas las categorías seleccionadas (sin duplicar)
   const opts=[]; selCats.forEach(c=>(USO[c]||[]).forEach(u=>{ if(!opts.includes(u)) opts.push(u); }));
+  opts.sort((a,b)=>a.localeCompare(b,'es'));
   // Mantener solo selecciones válidas
   selUsos=selUsos.filter(u=>opts.includes(u));
   if(!opts.length){ grp.style.display='none'; chp.innerHTML=''; return; }
@@ -1317,6 +1331,8 @@ function setSeg(seg,el){
 function setTipo(t){
   selTipo=TIPOS.includes(t)?t:'Producto';
   TIPOS.forEach(x=>{ const c=document.getElementById('tp-'+x); if(c) c.classList.toggle('sel',x===selTipo); });
+  const ot=document.getElementById('tipoOtros');
+  if(ot){ if(selTipo==='Otros'){ ot.style.display='block'; } else { ot.style.display='none'; ot.value=''; } }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1330,11 +1346,18 @@ function saveProd(){
   const pre=buildPres();
   let cant=parseInt(document.getElementById('fCant').value,10);
 
+  // Tipo final (texto manual cuando Tipo = Otros)
+  var tipoFinal=selTipo;
+  if(selTipo==='Otros'){
+    var to=document.getElementById('tipoOtros'); var tt=((to&&to.value)||'').trim();
+    if(tt) tipoFinal=tt;
+  }
+
   const base={
     fecha:document.getElementById('fFec').value||hoy(),
     codigo:curCode||'Manual',
     nombre:nom, marca:mar, presentacion:pre,
-    tipo:selTipo,
+    tipo:tipoFinal,
     expira:document.getElementById('fExp').value||'',
     categorias:[...selCats],
     usoAdecuado:selUsos.join(', '),
@@ -1376,7 +1399,7 @@ function saveProd(){
     if(base.tienda) ex.tienda=base.tienda;
     if(base.precio!=='') ex.precio=base.precio;
     if(base.notas) ex.notas=base.notas;
-    if(selTipo) ex.tipo=selTipo;
+    if(tipoFinal) ex.tipo=tipoFinal;
     if(base.expira) ex.expira=base.expira;
     photos.forEach(ph=>{ if(!(ex.fotos||[]).includes(ph)){ ex.fotos=ex.fotos||[]; ex.fotos.push(ph); } });
     if(curCode && (!ex.codigo||ex.codigo==='Manual')) ex.codigo=curCode;
@@ -1400,7 +1423,9 @@ function startEdit(id){
   document.getElementById('fFec').value=p.fecha||hoy();
   document.getElementById('fCant').value=(p.cantidad!=null?p.cantidad:1);
   document.getElementById('fExp').value=p.expira||'';
-  setTipo(p.tipo||'Producto');
+  var pTipo=p.tipo||'Producto';
+  if(TIPOS.indexOf(pTipo)>=0){ setTipo(pTipo); }
+  else { setTipo('Otros'); var _to=document.getElementById('tipoOtros'); if(_to){ _to.value=pTipo; _to.style.display='block'; } }
   document.getElementById('fEtq').value=p.etiqueta||'';
   document.getElementById('fTnd').value=p.tienda||'';
   document.getElementById('fPrc').value=p.precio||'';
@@ -1444,7 +1469,8 @@ function resetForm(){
   ['bajo','moderado','alto','corrosivo'].forEach(s=>{ const c=document.getElementById('sc-'+s); if(c) c.className='chip'; });
   const cb=document.getElementById('codeBox'); cb.className='';
   cb.innerHTML='<svg class="bi" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="14" y1="3" x2="14" y2="21"/><line x1="3" y1="9" x2="9" y2="9"/><line x1="15" y1="9" x2="21" y2="9"/><line x1="3" y1="14" x2="21" y2="14"/></svg> Sin código detectado';
-  curCode=''; selSeg=''; selUsos=[]; selCats=[]; photos=[]; editingId=null;
+  curCode=''; selSeg=''; selUsos=[]; selCats=[]; photos=[]; editingId=null; otrosOn=false;
+  const _to=document.getElementById('tipoOtros'); if(_to){ _to.value=''; _to.style.display='none'; }
   document.getElementById('fCant').value='1';
   setTipo('Producto');
   document.getElementById('btnSaveTxt').textContent='Agregar al inventario';
@@ -1560,21 +1586,13 @@ function openModal(id){
 function buyLinks(p){
   const full=encodeURIComponent([p.nombre,p.marca,p.presentacion].filter(Boolean).join(' '));
   const nm=encodeURIComponent([p.nombre,p.marca].filter(Boolean).join(' '));
-  const opts=[
-    ['— Elegir tienda para buscar —',''],
-    ['Amazon','https://www.amazon.com/s?k='+full],
-    ['Novey','https://www.novey.com.pa/catalogsearch/result/?q='+nm],
-    ['Do it Center','https://www.doitcenter.com.pa/search?q='+nm],
-    ['Kärcher Panamá','https://www.karcher.com/pa/search.html?text='+nm],
-    ['Ferramenta Store','https://www.ferramentae.com/?post_type=product&s='+nm],
-    ['Carbone Store','https://carbonestore.com/search?q='+nm],
-    ['Buscar en Google','https://www.google.com/search?q='+nm]
-  ];
-  const sel='<select class="buysel" onchange="if(this.value){window.open(this.value,&quot;_blank&quot;,&quot;noopener&quot;);this.selectedIndex=0;}">'+
-    opts.map(o=>'<option value="'+o[1]+'">'+o[0]+'</option>').join('')+'</select>';
+  const A='https://www.amazon.com/s?k='+full;
+  const G='https://www.google.com/search?q='+nm;
   return '<div class="buyttl">Comprar / reponer</div>'+
-    '<div class="selwrap buyselwrap">'+sel+'</div>'+
-    '<div class="buynote">Elige una tienda y se abrirá su buscador con este producto.</div>';
+    '<div class="buybtns">'+
+      '<a class="btn buy-amazon" href="'+A+'" target="_blank" rel="noopener">Buscar en Amazon</a>'+
+      '<a class="btn buy-google" href="'+G+'" target="_blank" rel="noopener">Buscar en Google</a>'+
+    '</div>';
 }
 function closeModal(){ document.getElementById('modal').classList.remove('on'); }
 function onBg(e,id){ if(e.target===document.getElementById(id)){ if(id==='modal') closeModal(); else closeSheet(); } }
@@ -1703,6 +1721,7 @@ function renderStats(){
    EXPORTAR EXCEL
 ═══════════════════════════════════════════════════════ */
 /* ── v15: ordenar por categoría y luego alfabético ── */
+function azName(a,b){ return (a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es'); }
 function sortByCat(list){
   return list.slice().sort(function(a,b){
     var ca=(catsArr(a)[0]||'~').toLowerCase(), cb=(catsArr(b)[0]||'~').toLowerCase();
@@ -1725,7 +1744,7 @@ function repTableHTML(r){
 function repPDF(r){
   document.getElementById('printRoot').innerHTML=
     reportHeader(r.title,r.sub,r.fecha)+(r.summary||'')+repTableHTML(r)+
-    '<div class="pr-foot">'+esc(r.foot||('Documento generado con CleanInv · '+r.fecha))+'</div>';
+    '<div class="pr-foot">'+esc(r.foot||('Documento generado con VAUR · '+r.fecha))+'</div>';
   toast('Abriendo PDF…'); setTimeout(function(){window.print();},300);
 }
 function repWB(r){
@@ -1767,28 +1786,36 @@ function out(kind,fmt){
   var r=buildReport(kind); if(!r) return;
   if(fmt==='pdf') repPDF(r); else if(fmt==='xlsx') repXLSX(r); else repSend(r);
 }
+function mesNombre(n){ return ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][n]||''; }
+function fechaCorta(t){ var d=new Date(t); var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2); return dd+'/'+mm+'/'+d.getFullYear(); }
+function weekTitle(){
+  var end=new Date(), start=new Date(Date.now()-6*DAY);
+  var ds=start.getDate(), de=end.getDate();
+  if(start.getMonth()===end.getMonth()) return 'Reporte de Compra Semana del '+ds+' al '+de+' de '+mesNombre(end.getMonth());
+  return 'Reporte de Compra Semana del '+ds+' de '+mesNombre(start.getMonth())+' al '+de+' de '+mesNombre(end.getMonth());
+}
 function buildReport(kind){
   var fecha=nowStr();
   if(kind==='inv'){
-    var list=sortByCat(invFiltered());
+    var list=invFiltered().slice().sort(azName);
     if(!list.length){ toast('No hay productos en esta vista'); return null; }
     var unidades=list.reduce(function(s,p){return s+(Number(p.cantidad)||0);},0);
     var catSet=new Set(); list.forEach(function(p){catsArr(p).forEach(function(c){catSet.add(c);});});
     var ceros=list.filter(function(p){return (Number(p.cantidad)||0)===0;}).length;
     return {fecha:fecha,
       title:'Inventario de Productos de Limpieza'+(filterCat?' — '+filterCat:''),
-      sub:(filterCat?('Categoría: '+filterCat):'Reporte general')+' · por categoría y alfabético',
+      sub:(filterCat?('Categoría: '+filterCat):''),
       head:['Fecha','Nombre','Marca','Presentación','Tipo','Cantidad','Categorías','Lugar de compra','Precio USD','Expira'],
       rows:list.map(function(p){return [p.fecha,p.nombre,p.marca,p.presentacion,p.tipo||'Producto',(Number(p.cantidad)||0),catsArr(p).join(', '),p.tienda||'',(p.precio!==''&&p.precio!=null)?Number(p.precio):'',p.expira||''];}),
       zeroCol:5,numCols:[5,8],
       summary:'<div class="pr-sum"><div><b>'+list.length+'</b>Productos</div><div><b>'+unidades+'</b>Unidades</div><div><b>'+catSet.size+'</b>Categorías</div>'+(ceros?'<div class="pr-zero"><b>'+ceros+'</b>Stock cero</div>':'')+'</div>',
-      foot:'Ordenado por categoría y luego alfabéticamente · filas en rojo = stock cero · '+fecha,
+      foot:'Filas en rojo = stock cero · '+fecha,
       sheet:'Inventario',file:'Inventario',colw:[11,26,16,16,13,9,28,18,11,12]};
   }
   if(kind==='nostock'){
-    var l2=sortByCat(DB.filter(function(p){return (Number(p.cantidad)||0)===0;}));
+    var l2=DB.filter(function(p){return (Number(p.cantidad)||0)===0;}).sort(azName);
     if(!l2.length){ toast('No hay productos agotados 👍'); return null; }
-    return {fecha:fecha,title:'Producto Agotado (No Disponible)',sub:'Productos sin stock · por categoría y alfabético',
+    return {fecha:fecha,title:'Producto Agotado (No Disponible)',sub:'',
       head:['Nombre','Marca','Presentación','Lugar de compra','Precio USD'],
       rows:l2.map(function(p){return [p.nombre,p.marca,p.presentacion,p.tienda||'',(p.precio!==''&&p.precio!=null)?Number(p.precio):''];}),
       numCols:[4],
@@ -1796,47 +1823,65 @@ function buildReport(kind){
       foot:'Listado de productos agotados · '+fecha,sheet:'Sin stock',file:'ProductoSinStock',colw:[26,16,16,20,11]};
   }
   if(kind==='expiring'){
-    var l3=DB.filter(isExpiring).sort(function(a,b){return daysUntil(a.expira)-daysUntil(b.expira);});
+    var l3=DB.filter(isExpiring).sort(azName);
     if(!l3.length){ toast('No hay productos vencidos ni próximos 👍'); return null; }
     var venc=l3.filter(function(p){return expStatus(p).state==='expired';}).length;
-    return {fecha:fecha,title:'Productos por vencer',sub:'Vencidos y a 3 semanas o menos · por urgencia',
-      head:['Nombre','Marca','Presentación','Tipo','Fecha exp.','Estado','Cantidad'],
-      rows:l3.map(function(p){return [p.nombre,p.marca,p.presentacion,p.tipo||'Producto',p.expira,expText(p),(Number(p.cantidad)||0)];}),
-      numCols:[6],
+    return {fecha:fecha,title:'Productos por vencer',sub:'',
+      head:['Nombre','Marca','Presentación','Tipo','Fecha exp.','Estado','Cantidad','Lugar de compra','Precio USD'],
+      rows:l3.map(function(p){return [p.nombre,p.marca,p.presentacion,p.tipo||'Producto',p.expira,expText(p),(Number(p.cantidad)||0),p.tienda||'',(p.precio!==''&&p.precio!=null)?Number(p.precio):''];}),
+      numCols:[6,8],
       summary:'<div class="pr-sum"><div class="pr-exp"><b>'+venc+'</b>Vencidos</div><div class="pr-exp"><b>'+(l3.length-venc)+'</b>Por vencer</div></div>',
-      foot:'Productos vencidos o próximos a vencer · '+fecha,sheet:'Por vencer',file:'PorVencer',colw:[26,16,16,13,12,20,9]};
+      foot:'Productos vencidos o próximos a vencer · '+fecha,sheet:'Por vencer',file:'PorVencer',colw:[26,16,16,13,12,18,9,18,11]};
   }
   if(kind==='freq'){
     var d=statPeriod;
-    var r0=DB.map(function(p){return {p:p,q:sumWindow(p.compras,d),veces:countWindow(p.compras,d)};}).filter(function(x){return x.q>0;}).sort(function(a,b){return b.q-a.q;});
-    if(!r0.length){ toast('Sin compras en el periodo elegido'); return null; }
-    var tg=0;
-    var rows=r0.map(function(x){var pr=(x.p.precio!==''&&x.p.precio!=null)?Number(x.p.precio):null;var tot=pr!=null?pr*x.q:null;if(tot!=null)tg+=tot;
-      return [x.p.nombre,x.p.marca,x.p.presentacion,x.veces,x.q,(pr!=null?pr:''),(tot!=null?Number(tot.toFixed(2)):'')];});
-    return {fecha:fecha,title:'Frecuencia de Compras',sub:'Compras de la '+periodLabel(d)+' · con precios',
-      head:['Nombre','Marca','Presentación','Veces','Unidades','Precio USD','Total USD'],rows:rows,numCols:[3,4,5,6],
-      summary:'<div class="pr-sum"><div><b>'+r0.length+'</b>Productos</div><div><b>'+r0.reduce(function(s,x){return s+x.q;},0)+'</b>Unidades</div><div><b>$'+tg.toFixed(2)+'</b>Total</div></div>',
-      foot:'Total con el precio guardado de cada producto · '+fecha,sheet:'Frecuencia',file:'Frecuencia',colw:[26,16,16,8,10,11,11]};
+    var lim=Date.now()-d*DAY, ev=[];
+    DB.forEach(function(p){
+      (Array.isArray(p.compras)?p.compras:[]).forEach(function(c){
+        var t=evTs(c.f);
+        if(t>=lim) ev.push({t:t,lugar:p.tienda||'',nombre:p.nombre||'',marca:p.marca||'',pres:p.presentacion||'',cant:Number(c.c)||0,precio:(p.precio!==''&&p.precio!=null)?Number(p.precio):''});
+      });
+    });
+    if(!ev.length){ toast('Sin compras en el periodo elegido'); return null; }
+    if(d===7){
+      ev.sort(function(a,b){
+        return (a.lugar||'').toLowerCase().localeCompare((b.lugar||'').toLowerCase(),'es')
+          || (a.marca||'').toLowerCase().localeCompare((b.marca||'').toLowerCase(),'es')
+          || (a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es')
+          || (a.pres||'').toLowerCase().localeCompare((b.pres||'').toLowerCase(),'es')
+          || ((a.precio||0)-(b.precio||0));
+      });
+      return {fecha:fecha,title:weekTitle(),sub:'',
+        head:['Lugar de compra','Marca','Nombre','Presentación','Cantidad','Precio USD'],
+        rows:ev.map(function(e){return [e.lugar,e.marca,e.nombre,e.pres,e.cant,e.precio];}),
+        numCols:[4,5],sheet:'Compras semana',file:'ReporteCompra_Semana',colw:[20,16,26,16,9,11]};
+    }
+    ev.sort(function(a,b){ return a.t-b.t; });
+    var ttl=(d===30)?'Reporte Compras del Mes':('Reporte de Compras — '+periodLabel(d));
+    return {fecha:fecha,title:ttl,sub:'',
+      head:['Fecha','Lugar de compra','Nombre','Marca','Presentación','Cantidad','Precio USD'],
+      rows:ev.map(function(e){return [fechaCorta(e.t),e.lugar,e.nombre,e.marca,e.pres,e.cant,e.precio];}),
+      numCols:[5,6],sheet:'Compras',file:'ReporteCompras',colw:[12,20,26,16,16,9,11]};
   }
   if(kind==='recurrent'){
     var rs=document.getElementById('recSel'); var dd=rs?Number(rs.value):30;
-    var rr=DB.map(function(p){return {p:p,veces:countWindow(p.compras,dd),q:sumWindow(p.compras,dd)};}).filter(function(x){return x.veces>=2;}).sort(function(a,b){return b.veces-a.veces;});
+    var rr=DB.map(function(p){return {p:p,veces:countWindow(p.compras,dd),q:sumWindow(p.compras,dd)};}).filter(function(x){return x.veces>=2;}).sort(function(a,b){return azName(a.p,b.p);});
     if(!rr.length){ toast('Sin productos recurrentes en el periodo'); return null; }
-    return {fecha:fecha,title:'Compras Recurrentes',sub:'Se repiten 2+ veces en la '+periodLabel(dd),
-      head:['Nombre','Marca','Presentación','Tipo','Veces','Unidades','Última compra'],
-      rows:rr.map(function(x){return [x.p.nombre,x.p.marca,x.p.presentacion,x.p.tipo||'Producto',x.veces,x.q,fmtAgo(lastTs(x.p.compras))];}),numCols:[4,5],
+    return {fecha:fecha,title:'Compras Recurrentes',sub:'',
+      head:['Nombre','Marca','Presentación','Tipo','Lugar de compra','Unidades','Precio USD','Última compra'],
+      rows:rr.map(function(x){return [x.p.nombre,x.p.marca,x.p.presentacion,x.p.tipo||'Producto',x.p.tienda||'',x.q,(x.p.precio!==''&&x.p.precio!=null)?Number(x.p.precio):'',fmtAgo(lastTs(x.p.compras))];}),numCols:[5,6],
       summary:'<div class="pr-sum"><div><b>'+rr.length+'</b>Productos</div></div>',
-      foot:'Productos que vuelves a comprar seguido · '+fecha,sheet:'Recurrentes',file:'Recurrentes',colw:[26,16,16,13,8,10,16]};
+      foot:'Productos que vuelves a comprar seguido · '+fecha,sheet:'Recurrentes',file:'Recurrentes',colw:[26,16,16,13,18,10,11,16]};
   }
   if(kind==='unused'){
     var cand=DB.map(function(p){var u=totalC(p.usos),lu=lastTs(p.usos);var ref=(lu!=null)?lu:evTs(p.fecha);return {p:p,u:u,lc:lastTs(p.compras),ref:ref,gap:daysSince(ref)};})
-      .filter(function(x){return (x.u===0||(x.gap!=null&&x.gap>=30))&&(Number(x.p.cantidad)||0)>0;}).sort(function(a,b){return (b.gap||0)-(a.gap||0);});
+      .filter(function(x){return (x.u===0||(x.gap!=null&&x.gap>=30))&&(Number(x.p.cantidad)||0)>0;}).sort(function(a,b){return azName(a.p,b.p);});
     if(!cand.length){ toast('Todo tu inventario se ha movido recientemente 👍'); return null; }
-    return {fecha:fecha,title:'Inventario sin movimiento',sub:'Productos sin uso reciente · por antigüedad',
-      head:['Nombre','Marca','Presentación','Tipo','Cantidad','Sin usar','Última compra'],
-      rows:cand.map(function(x){return [x.p.nombre,x.p.marca,x.p.presentacion,x.p.tipo||'Producto',(Number(x.p.cantidad)||0),(x.u===0?'desde que se agregó · ':'')+fmtAgo(x.ref),fmtAgo(x.lc)];}),numCols:[4],
+    return {fecha:fecha,title:'Inventario sin movimiento',sub:'',
+      head:['Nombre','Marca','Presentación','Tipo','Lugar de compra','Cantidad','Precio USD','Sin usar','Última compra'],
+      rows:cand.map(function(x){return [x.p.nombre,x.p.marca,x.p.presentacion,x.p.tipo||'Producto',x.p.tienda||'',(Number(x.p.cantidad)||0),(x.p.precio!==''&&x.p.precio!=null)?Number(x.p.precio):'',(x.u===0?'desde que se agregó · ':'')+fmtAgo(x.ref),fmtAgo(x.lc)];}),numCols:[5,6],
       summary:'<div class="pr-sum"><div><b>'+cand.length+'</b>Productos</div></div>',
-      foot:'Productos sin movimiento reciente · '+fecha,sheet:'Sin movimiento',file:'SinMovimiento',colw:[26,16,16,13,9,24,16]};
+      foot:'Productos sin movimiento reciente · '+fecha,sheet:'Sin movimiento',file:'SinMovimiento',colw:[26,16,16,13,18,9,11,22,16]};
   }
   return null;
 }
@@ -1851,7 +1896,7 @@ function reportHeader(title,sub,fecha){
     ? '<img src="'+AJ.logo+'" alt="logo" style="max-width:100%;max-height:100%;object-fit:contain">'
     : '<svg viewBox="0 0 24 24"><path d="M3 7h13l1.5 4H21a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/><path d="M3 7v9a1 1 0 0 0 1 1h1"/><circle cx="8" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M7 7V4h6v3"/></svg>';
   return '<div class="pr-head"><div class="pr-mark'+(AJ.logo?' pr-logo':'')+'">'+markInner+'</div>'+
-    '<div class="pr-title"><h1>'+(empresa?esc(empresa)+' — '+esc(title):esc(title))+'</h1><p>CleanInv — '+esc(sub)+'</p></div>'+
+    '<div class="pr-title"><h1>'+(empresa?esc(empresa)+' — '+esc(title):esc(title))+'</h1>'+(sub?'<p>'+esc(sub)+'</p>':'')+'</div>'+
     '<div class="pr-meta">Generado<br>'+esc(fecha)+'</div></div>';
 }
 function nowStr(){ return new Date().toLocaleString('es',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
@@ -1881,17 +1926,17 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'CleanInv',version:18,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'VAUR',version:20,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
 }
 async function shareBackup(){
   if(!DB.length){ toast('No hay productos para compartir'); return; }
   const blob=backupBlob();
-  const fname='CleanInv_'+hoy()+'.json';
+  const fname='VAUR_'+hoy()+'.json';
   const file=new File([blob],fname,{type:'application/json'});
   // Web Share API con archivos (iOS/Android modernos)
   if(navigator.canShare&&navigator.canShare({files:[file]})){
-    try{ await navigator.share({files:[file],title:'Inventario CleanInv',text:'Inventario de limpieza ('+DB.length+' productos)'}); return; }
+    try{ await navigator.share({files:[file],title:'Inventario VAUR',text:'Inventario de limpieza ('+DB.length+' productos)'}); return; }
     catch(e){ if(e&&e.name==='AbortError') return; }
   }
   // Descarga directa

@@ -767,11 +767,12 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
   <!-- INVENTARIO SIN MOVIMIENTO -->
   <div class="card">
     <div class="sec"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>Inventario sin movimiento</div>
-    <p class="note" style="margin:0 0 10px">Productos que llevan tiempo sin usarse. Genera el listado en PDF:</p>
-    <button class="btn btn-o btn-w" onclick="printUnused()">
-      <svg class="bi" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      PDF de inventario sin movimiento
-    </button>
+    <p class="note" style="margin:0 0 10px">Productos que llevan tiempo sin usarse:</p>
+    <div class="exprow">
+      <button class="btn btn-o" onclick="out('unused','pdf')">PDF</button>
+      <button class="btn btn-o" onclick="out('unused','xlsx')">Excel</button>
+      <button class="btn btn-o" onclick="out('unused','send')">Enviar</button>
+    </div>
   </div>
 
   <div class="card"><div class="sec"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Por categoría</div><div id="catB"></div></div>
@@ -870,7 +871,7 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
     <div id="catHelp" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 15 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 17 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -1878,7 +1879,7 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'CleanInv',version:15,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'CleanInv',version:17,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
 }
 async function shareBackup(){

@@ -1,0 +1,66 @@
+{
+  "name": "VAUR — Inventario de limpieza",
+  "short_name": "VAUR",
+  "description": "Inventario profesional de productos de limpieza con escáner de código de barras y QR. Funciona sin conexión.",
+  "id": "/cleaninv/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#ECEEEA",
+  "theme_color": "#274D45",
+  "lang": "es",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "business"],
+  "shortcuts": [
+    {
+      "name": "Escanear producto",
+      "short_name": "Escanear",
+      "description": "Abrir el escáner de código",
+      "url": "./index.html#scan",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Ver inventario",
+      "short_name": "Inventario",
+      "description": "Lista de productos",
+      "url": "./index.html#inv",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Productos por reponer",
+      "short_name": "Sin stock",
+      "description": "Productos con inventario en cero",
+      "url": "./index.html#zeros",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Estadísticas",
+      "short_name": "Stats",
+      "description": "Resumen y reportes",
+      "url": "./index.html#stats",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

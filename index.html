@@ -871,7 +871,7 @@ body.dark .fg-uso{background:#15302E;border-color:#22433F}
     <div id="catHelp" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 17 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 18 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -1465,6 +1465,8 @@ function invFiltered(){
 }
 function renderInv(){
   const list=document.getElementById('invList');
+  const sQ=document.getElementById('searchQ');
+  const q=((sQ&&sQ.value)||'');
   const data=invFiltered().sort((a,b)=>(a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es'));
   if(!data.length){
     list.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><p>'+(q?'Sin resultados para «'+esc(q)+'»':'Sin productos registrados.<br>Escanea un código para comenzar.')+'</p></div>';
@@ -1879,7 +1881,7 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'CleanInv',version:17,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'CleanInv',version:18,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
 }
 async function shareBackup(){

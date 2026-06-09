@@ -695,6 +695,12 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
 
 <!-- ══════════════ TAB 2: INVENTARIO ══════════════ -->
 <div class="page" id="page-inv">
+  <div id="backupReminder" style="display:none;align-items:center;gap:10px;background:#FFF4D6;border:1px solid #E9D08A;color:#6B5318;border-radius:12px;padding:11px 12px;margin-bottom:12px;font-size:13.5px">
+    <span style="font-size:18px">📦</span>
+    <span style="flex:1">Es momento de tu <b>respaldo semanal</b>. Guarda una copia por seguridad.</span>
+    <button class="btn btn-p" style="padding:8px 12px;font-size:13px" onclick="shareBackup()">Respaldar</button>
+    <button aria-label="Cerrar" style="background:none;border:none;color:#6B5318;font-size:20px;line-height:1;padding:0 4px;cursor:pointer" onclick="dismissBackup()">×</button>
+  </div>
   <div class="invtop">
     <input type="text" id="searchQ" placeholder="🔍  Buscar nombre, marca…" oninput="renderInv()">
     <div class="selwrap"><select id="invCatSel" onchange="setInvCat(this.value)"></select></div>
@@ -895,7 +901,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <div id="catHelp" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 21 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 22 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -1147,7 +1153,7 @@ async function init(){
     setTipo(selTipo);
     document.getElementById('fEmpresa').value=AJ.empresa||'';
     renderLogoBox();
-    renderPhotos(); buildInvCats(); renderInv(); renderStats(); updateBadge();
+    renderPhotos(); buildInvCats(); renderInv(); renderStats(); updateBadge(); checkBackupReminder();
   }catch(err){
     try{ var t=document.getElementById('toast'); if(t){ t.textContent='Aviso: '+(err&&err.message||err); t.classList.add('on'); } }catch(e){}
   }
@@ -1250,9 +1256,28 @@ function doScan(vid){
 function setCode(code,tipo){
   curCode=code;
   const box=document.getElementById('codeBox');
-  box.className='ok'; box.textContent='✅ ['+tipo+'] '+code;
-  stopCam(); toast('¡Código '+tipo+' detectado!');
-  setTimeout(()=>{ const n=document.getElementById('fNom'); n.scrollIntoView({behavior:'smooth',block:'center'}); n.focus(); },450);
+  if(box){ box.className='ok'; box.textContent='✅ ['+tipo+'] '+code; }
+  stopCam();
+  // Buscar de inmediato en tu propia base (offline)
+  var ex=DB.find(function(p){return p.codigo&&p.codigo!=='Manual'&&p.codigo===code;});
+  if(ex && editingId===null){
+    var quien=(ex.nombre||'')+(ex.marca?(' '+ex.marca):'')+(ex.presentacion?(' · '+ex.presentacion):'');
+    var msg='Ya tienes "'+quien+'" (cantidad actual: '+(Number(ex.cantidad)||0)+').\n\nAceptar = sumar +1 ahora.\nCancelar = ver / editar el producto.';
+    if(confirm(msg)){
+      ex.cantidad=(Number(ex.cantidad)||0)+1;
+      ex.compras=Array.isArray(ex.compras)?ex.compras:[];
+      ex.compras.push({f:Date.now(),c:1});
+      ex.updated=Date.now();
+      save(); renderInv(); renderStats(); updateBadge();
+      toast('🔁 +1 a '+(ex.nombre||'producto')+'. Total: '+ex.cantidad);
+      goTab('inv',document.querySelectorAll('.tab')[1]);
+    } else {
+      startEdit(ex.id);
+    }
+    return;
+  }
+  toast('¡Código '+tipo+' detectado!');
+  setTimeout(()=>{ const n=document.getElementById('fNom'); if(n){ n.scrollIntoView({behavior:'smooth',block:'center'}); n.focus(); } },450);
 }
 function useManual(){
   const v=document.getElementById('manInput').value.trim();
@@ -1270,12 +1295,12 @@ function onPhotoChange(e){
     if(!f.type.startsWith('image/')){ done++; if(done===files.length) renderPhotos(); return; }
     const img=new Image(), url=URL.createObjectURL(f);
     img.onload=()=>{
-      const MAX=1000; let w=img.width,h=img.height;
+      const MAX=900; let w=img.width,h=img.height;
       if(w>h){ if(w>MAX){ h=Math.round(h*MAX/w); w=MAX; } }
       else { if(h>MAX){ w=Math.round(w*MAX/h); h=MAX; } }
       const c=document.createElement('canvas'); c.width=w; c.height=h;
       c.getContext('2d').drawImage(img,0,0,w,h);
-      photos.push(c.toDataURL('image/jpeg',0.7));
+      photos.push(c.toDataURL('image/jpeg',0.6));
       URL.revokeObjectURL(url); done++;
       if(done===files.length) renderPhotos();
     };
@@ -1380,6 +1405,26 @@ function setTipo(t){
 /* ═══════════════════════════════════════════════════════
    GUARDAR / EDITAR
 ═══════════════════════════════════════════════════════ */
+function sumarAExistente(ex,cant,base,tipoFinal){
+  ex.cantidad=(Number(ex.cantidad)||0)+cant;
+  ex.compras=Array.isArray(ex.compras)?ex.compras:[];
+  ex.compras.push({f:Date.now(),c:cant});
+  ex.categorias=[...new Set([...(ex.categorias||[]),...selCats])];
+  if(selUsos.length){ ex.usoAdecuado=[...new Set([...((ex.usoAdecuado||'').split(',').map(s=>s.trim()).filter(Boolean)),...selUsos])].join(', '); }
+  if(selSeg) ex.seguridad=selSeg;
+  if(base.etiqueta) ex.etiqueta=base.etiqueta;
+  if(base.tienda) ex.tienda=base.tienda;
+  if(base.precio!=='') ex.precio=base.precio;
+  if(base.notas) ex.notas=base.notas;
+  if(tipoFinal) ex.tipo=tipoFinal;
+  if(base.expira) ex.expira=base.expira;
+  photos.forEach(ph=>{ if(!(ex.fotos||[]).includes(ph)){ ex.fotos=ex.fotos||[]; ex.fotos.push(ph); } });
+  if(curCode && (!ex.codigo||ex.codigo==='Manual')) ex.codigo=curCode;
+  ex.updated=Date.now();
+  save(); resetForm(); renderInv(); renderStats(); updateBadge();
+  toast('🔁 Ya existía: +'+cant+'. Total ahora: '+ex.cantidad);
+  goTab('inv',document.querySelectorAll('.tab')[1]);
+}
 function saveProd(){
   const nom=document.getElementById('fNom').value.trim();
   const mar=document.getElementById('fMar').value.trim();
@@ -1426,29 +1471,30 @@ function saveProd(){
   }
 
   if(!isFinite(cant)||cant<1) cant=1;
+
+  // Aviso si el código de barras ya existe (escaneado o escrito a mano)
+  if(curCode && curCode!=='Manual'){
+    var dupC=DB.find(function(p){return p.codigo&&p.codigo!=='Manual'&&p.codigo===curCode;});
+    if(dupC){
+      var quien=(dupC.nombre||'')+(dupC.marca?(' '+dupC.marca):'')+(dupC.presentacion?(' · '+dupC.presentacion):'');
+      var msg='Ya tienes "'+quien+'" con este mismo código de barras.\n\nAceptar = sumar la cantidad a ese producto.\nCancelar = crear uno nuevo aparte.';
+      if(confirm(msg)){
+        sumarAExistente(dupC,cant,base,tipoFinal);
+        return;
+      } else {
+        DB.push(Object.assign({id:Date.now()},base,{cantidad:cant,compras:[{f:Date.now(),c:cant}],usos:[]}));
+        save(); resetForm(); renderInv(); renderStats(); updateBadge();
+        toast('✅ Producto agregado ('+cant+')');
+        goTab('inv',document.querySelectorAll('.tab')[1]);
+        return;
+      }
+    }
+  }
+
   const key=prodKey(nom,mar,pre);
   const ex=DB.find(p=>prodKey(p.nombre,p.marca,p.presentacion)===key);
   if(ex){
-    // Mismo nombre+marca+presentación → sumar cantidad (el código de barras no importa)
-    ex.cantidad=(Number(ex.cantidad)||0)+cant;
-    ex.compras=Array.isArray(ex.compras)?ex.compras:[];
-    ex.compras.push({f:Date.now(),c:cant});
-    // Enriquecer datos sin perder lo existente
-    ex.categorias=[...new Set([...(ex.categorias||[]),...selCats])];
-    if(selUsos.length){ ex.usoAdecuado=[...new Set([...((ex.usoAdecuado||'').split(',').map(s=>s.trim()).filter(Boolean)),...selUsos])].join(', '); }
-    if(selSeg) ex.seguridad=selSeg;
-    if(base.etiqueta) ex.etiqueta=base.etiqueta;
-    if(base.tienda) ex.tienda=base.tienda;
-    if(base.precio!=='') ex.precio=base.precio;
-    if(base.notas) ex.notas=base.notas;
-    if(tipoFinal) ex.tipo=tipoFinal;
-    if(base.expira) ex.expira=base.expira;
-    photos.forEach(ph=>{ if(!(ex.fotos||[]).includes(ph)){ ex.fotos=ex.fotos||[]; ex.fotos.push(ph); } });
-    if(curCode && (!ex.codigo||ex.codigo==='Manual')) ex.codigo=curCode;
-    ex.updated=Date.now();
-    save(); resetForm(); renderInv(); renderStats(); updateBadge();
-    toast('🔁 Ya existía: +'+cant+'. Total ahora: '+ex.cantidad);
-    goTab('inv',document.querySelectorAll('.tab')[1]);
+    sumarAExistente(ex,cant,base,tipoFinal);
   }else{
     DB.push(Object.assign({id:Date.now()},base,{cantidad:cant,compras:[{f:Date.now(),c:cant}],usos:[]}));
     save(); resetForm(); renderInv(); renderStats(); updateBadge();
@@ -1987,11 +2033,29 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'VAUR',version:21,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'VAUR',version:22,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
+}
+function checkBackupReminder(){
+  try{
+    var last=Number(localStorage.getItem('vaur_lastBackup')||0);
+    var now=Date.now();
+    var esSabado=(new Date().getDay()===6);
+    var paseUnaSemana=(now-last)>7*86400000;
+    var ocultadoHoy=(localStorage.getItem('vaur_backupDismiss')===new Date().toDateString());
+    if((esSabado||paseUnaSemana) && !ocultadoHoy && DB.length){
+      var b=document.getElementById('backupReminder'); if(b) b.style.display='flex';
+    }
+  }catch(e){}
+}
+function dismissBackup(){
+  try{ localStorage.setItem('vaur_backupDismiss',new Date().toDateString()); }catch(e){}
+  var b=document.getElementById('backupReminder'); if(b) b.style.display='none';
 }
 async function shareBackup(){
   if(!DB.length){ toast('No hay productos para compartir'); return; }
+  try{ localStorage.setItem('vaur_lastBackup',String(Date.now())); }catch(e){}
+  var _b=document.getElementById('backupReminder'); if(_b) _b.style.display='none';
   const blob=backupBlob();
   const fname='VAUR_'+hoy()+'.json';
   const file=new File([blob],fname,{type:'application/json'});

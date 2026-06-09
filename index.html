@@ -731,7 +731,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <div class="sec ic-b"><svg class="ico" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Frecuencia de Compras</div>
     <p class="note" style="margin:0 0 10px">Elige el periodo y descarga el reporte (incluye precio y total). El archivo sale ordenado de la A a la Z:</p>
     <div class="selwrap"><select id="freqSel" onchange="statPeriod=Number(this.value)">
-      <option value="7">Semana</option>
+      <option value="7">Esta Semana</option>
       <option value="30" selected>Mes</option>
       <option value="90">3 meses</option>
       <option value="180">6 meses</option>
@@ -852,6 +852,21 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   </div>
 
   <div class="card">
+    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cómo importar un archivo (.json)</div>
+    <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
+      <p style="margin-bottom:10px">Si guardaste un respaldo (archivo <b>.json</b>) y quieres cargarlo en la app:</p>
+      <div class="step" style="background:var(--sf2)">
+        <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
+        <b class="n">2.</b> Toca el botón <b>Compartir</b> (el ícono ↑ arriba a la derecha).<br>
+        <b class="n">3.</b> Elige <b>«Importar / Sincronizar»</b>.<br>
+        <b class="n">4.</b> Busca y selecciona tu archivo <b>.json</b> (en Archivos o Descargas).<br>
+        <b class="n">5.</b> Listo: los productos <b>se fusionan</b> (no se duplican; si uno ya existe, se conserva la versión más reciente).
+      </div>
+      <p class="note">Consejo: antes de importar, haz primero un <b>Respaldo (JSON)</b> de lo que ya tengas, por si acaso. El nombre del archivo no importa (aunque diga «CleanInv»), la app lee su contenido.</p>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="sec"><svg class="ico" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>Compartir entre equipos</div>
     <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
       <p style="margin-bottom:10px">Para pasar el inventario a otro teléfono sin volver a capturar los productos:</p>
@@ -880,7 +895,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <div id="catHelp" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 20 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 21 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -963,18 +978,19 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
    CONSTANTES
 ═══════════════════════════════════════════════════════ */
 const CATS = [
-  "Alfombras y Tapizados","Baños","Electrodomésticos","Muebles-Estantería",
-  "Persianas o Cortinas","Pisos y Superficies","Techo","Vidrio"
+  "Alfombras y Tapizados","Baños","Electrodomésticos","Iluminación",
+  "Muebles-Estantería","Persianas o Cortinas","Pisos y Superficies","Techo","Vidrio"
 ];
 const USO = {
-  "Alfombras y Tapizados":["Alfombras","Asientos de auto","Colchones","Sofás","Tapetes","Tapizados"],
+  "Alfombras y Tapizados":["Alfombras","Bench","Colchones","Poltrona","Respaldar de Cama","Silla mecedora","Sillas tapizadas","Sillón reclinable","Sofás","Tapetes","Tapicería Automóvil","Tapizados"],
   "Baños":["Azulejos","Duchas y bañeras","Grifería","Inodoros","Juntas de cerámica","Lavamanos"],
   "Electrodomésticos":["Aire acondicionado","Estufa o Cocina","Extractor","Hornos","Lavadoras","Microondas","Nevera o Refrigerador","Secadora"],
+  "Iluminación":["Lámparas","Lámparas colgantes","Ventilador con luz"],
   "Muebles-Estantería":["Closets","Estanterías","Molduras","Muebles de madera","Puertas","Repisas"],
-  "Persianas o Cortinas":["Black-out","Cortinas de baño","Cortinas de tela","Estores","Persianas","Visillos"],
-  "Pisos y Superficies":["Cemento","Fregadero","Granito","Mármol","Mesones","Pisos cerámicos","Pisos de madera","Pisos vinílicos"],
-  "Techo":["Cielo raso","Molduras de techo","Techos interiores","Tumbado","Vigas"],
-  "Vidrio":["Espejos","Mamparas de vidrio","Parabrisas","Ventanas","Vitrinas"]
+  "Persianas o Cortinas":["Cortinas de baño","Cortinas de tela","De Madera 2\" sin cinta decorativa","De PVC de 2\" sin cinta decorativa","Double shade","Roller Screen","Rollers Black out","Verticales de PVC"],
+  "Pisos y Superficies":["Cemento o Embaldosado","Fregadero","Granito","Mármol","Mesones","Piso de Gimnasio","Piso Laminado","Piso SPC","Pisos cerámicos","Pisos de madera","Pisos vinílicos","Zócalo para piso"],
+  "Techo":["Canaleta de acero o láminada","Canaletas de PVC","Cielo raso","Metálico (Zinc)","Molduras de techo","Policarbonato","Techo exterior","Techo interior PVC","Teja","Tumbado","Vigas"],
+  "Vidrio":["Espejos","Mamparas de vidrio","Marco de Aluminio","Marco Metálico","Parabrisas","Puerta de Vidrio","Ventana corrediza","Vitrinas"]
 };
 const SEG_HINT = {
   "Bajo":"Sin EPP requerido. Lavarse las manos al terminar.",
@@ -985,8 +1001,8 @@ const SEG_HINT = {
 const SEG_TAGCLS = {Bajo:"s-bajo",Moderado:"s-mod",Alto:"s-alto",Corrosivo:"s-cor"};
 const CAT_CLS = {
   "Alfombras y Tapizados":"t-sand","Baños":"t-blue",
-  "Electrodomésticos":"t-mauv","Muebles-Estantería":"t-clay",
-  "Persianas o Cortinas":"t-rose","Pisos y Superficies":"t-sage",
+  "Electrodomésticos":"t-mauv","Iluminación":"t-rose",
+  "Muebles-Estantería":"t-clay","Persianas o Cortinas":"t-rose","Pisos y Superficies":"t-sage",
   "Techo":"t-sand","Vidrio":"t-blue"
 };
 const PRES = ["Onzas","Mililitros","Litros","Galón","Barril","Kilogramos","Gramos","Unidad","Paquete","Rollo","Aerosol"];
@@ -1045,11 +1061,37 @@ async function loadDB(){
   const aj=await idbGet('ajustes'); AJ=(aj&&typeof aj==='object')?aj:{};
   await persist();
 }
+var CAT_MAP={
+  'pisos y superficies':'Pisos y Superficies',
+  'baños y sanitarios':'Baños',
+  'vidrios y espejos':'Vidrio',
+  'ventana corrediza':'Vidrio',
+  'marcos':'',
+  'alfombras y tapizados':'Alfombras y Tapizados',
+  'equipos y electrodomésticos':'Electrodomésticos',
+  'metales e inox':'',
+  'madera y muebles':'Muebles-Estantería',
+  'cortinas':'Persianas o Cortinas',
+  'exteriores e industriales':'',
+  'cocina y desengrasante':'',
+  'ropa y lavandería':'',
+  'desinfección general':''
+};
+function mapOldCats(arr){
+  var out=[];
+  (Array.isArray(arr)?arr:[]).forEach(function(c){
+    var key=(c==null?'':String(c)).trim().toLowerCase();
+    var m=Object.prototype.hasOwnProperty.call(CAT_MAP,key)?CAT_MAP[key]:c;
+    if(m && out.indexOf(m)<0) out.push(m);
+  });
+  return out;
+}
 function normalize(p){
   // Compatibilidad con datos antiguos
   let cats=p.categorias;
   if(typeof cats==='string') cats=cats.split(',').map(s=>s.trim()).filter(Boolean);
   if(!Array.isArray(cats)) cats=p.categoria?[p.categoria]:[];
+  cats=mapOldCats(cats);
   let usos=p.usoAdecuado;
   if(Array.isArray(usos)) usos=usos.join(', ');
   const fecha=p.fecha||hoy();
@@ -1749,6 +1791,7 @@ function repPDF(r){
 }
 function repWB(r){
   var aoa=[r.head].concat(r.rows.map(function(row){return row.map(function(c){return c==null?'':c;});}));
+  if(r.totalRow) aoa.push(r.totalRow);
   var wb=XLSX.utils.book_new();
   var ws=XLSX.utils.aoa_to_sheet(aoa);
   if(r.colw) ws['!cols']=r.colw.map(function(w){return {wch:w};});
@@ -1788,11 +1831,20 @@ function out(kind,fmt){
 }
 function mesNombre(n){ return ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][n]||''; }
 function fechaCorta(t){ var d=new Date(t); var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2); return dd+'/'+mm+'/'+d.getFullYear(); }
+function weekRange(){
+  var n=new Date(); n.setHours(0,0,0,0);
+  var dw=n.getDay();                 // 0=domingo,1=lunes,…,6=sábado
+  var toMon=(dw===0?-6:1-dw);        // retroceder hasta el lunes
+  var mon=new Date(n); mon.setDate(n.getDate()+toMon); mon.setHours(0,0,0,0);
+  var sun=new Date(mon); sun.setDate(mon.getDate()+6); sun.setHours(23,59,59,999);
+  return {start:mon,end:sun};
+}
 function weekTitle(){
-  var end=new Date(), start=new Date(Date.now()-6*DAY);
-  var ds=start.getDate(), de=end.getDate();
-  if(start.getMonth()===end.getMonth()) return 'Reporte de Compra Semana del '+ds+' al '+de+' de '+mesNombre(end.getMonth());
-  return 'Reporte de Compra Semana del '+ds+' de '+mesNombre(start.getMonth())+' al '+de+' de '+mesNombre(end.getMonth());
+  var r=weekRange(), s=r.start, e=r.end, ds=s.getDate(), de=e.getDate();
+  var rango=(s.getMonth()===e.getMonth())
+    ? ('del '+ds+' al '+de+' de '+mesNombre(e.getMonth()))
+    : ('del '+ds+' de '+mesNombre(s.getMonth())+' al '+de+' de '+mesNombre(e.getMonth()));
+  return 'Reporte de Compras de Esta Semana ('+rango+')';
 }
 function buildReport(kind){
   var fecha=nowStr();
@@ -1835,37 +1887,46 @@ function buildReport(kind){
   }
   if(kind==='freq'){
     var d=statPeriod;
+    var wr=(d===7)?weekRange():null;
     var lim=Date.now()-d*DAY, ev=[];
     DB.forEach(function(p){
       (Array.isArray(p.compras)?p.compras:[]).forEach(function(c){
         var t=evTs(c.f);
-        if(t>=lim) ev.push({t:t,lugar:p.tienda||'',nombre:p.nombre||'',marca:p.marca||'',pres:p.presentacion||'',cant:Number(c.c)||0,precio:(p.precio!==''&&p.precio!=null)?Number(p.precio):''});
+        var dentro=(d===7)?(t>=wr.start.getTime()&&t<=wr.end.getTime()):(t>=lim);
+        if(dentro) ev.push({t:t,lugar:p.tienda||'',nombre:p.nombre||'',marca:p.marca||'',pres:p.presentacion||'',cant:Number(c.c)||0,precio:(p.precio!==''&&p.precio!=null)?Number(p.precio):''});
       });
     });
     if(!ev.length){ toast('Sin compras en el periodo elegido'); return null; }
     if(d===7){
-      ev.sort(function(a,b){
-        return (a.lugar||'').toLowerCase().localeCompare((b.lugar||'').toLowerCase(),'es')
-          || (a.marca||'').toLowerCase().localeCompare((b.marca||'').toLowerCase(),'es')
-          || (a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es')
-          || (a.pres||'').toLowerCase().localeCompare((b.pres||'').toLowerCase(),'es')
-          || ((a.precio||0)-(b.precio||0));
-      });
+      ev.sort(function(a,b){ return (a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es'); });
       return {fecha:fecha,title:weekTitle(),sub:'',
-        head:['Lugar de compra','Marca','Nombre','Presentación','Cantidad','Precio USD'],
-        rows:ev.map(function(e){return [e.lugar,e.marca,e.nombre,e.pres,e.cant,e.precio];}),
-        numCols:[4,5],sheet:'Compras semana',file:'ReporteCompra_Semana',colw:[20,16,26,16,9,11]};
+        head:['Nombre','Marca','Presentación','Cantidad','Lugar de compra','Precio USD'],
+        rows:ev.map(function(e){return [e.nombre,e.marca,e.pres,e.cant,e.lugar,e.precio];}),
+        numCols:[3,5],sheet:'Compras semana',file:'ReporteCompra_Semana',colw:[26,16,16,9,20,11]};
     }
-    ev.sort(function(a,b){ return a.t-b.t; });
+    // Mes y periodos mayores: agrupar por producto, con Total USD aparte
+    var agg={};
+    ev.forEach(function(e){
+      var k=e.nombre+'|'+e.marca+'|'+e.pres;
+      if(!agg[k]) agg[k]={nombre:e.nombre,marca:e.marca,pres:e.pres,cant:0,precio:e.precio};
+      agg[k].cant+=e.cant;
+    });
+    var arr=Object.keys(agg).map(function(k){return agg[k];});
+    arr.sort(function(a,b){ return (a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es'); });
+    var totalUSD=0;
+    arr.forEach(function(x){ if(x.precio!==''&&x.precio!=null) totalUSD+=x.cant*Number(x.precio); });
     var ttl=(d===30)?'Reporte Compras del Mes':('Reporte de Compras — '+periodLabel(d));
     return {fecha:fecha,title:ttl,sub:'',
-      head:['Fecha','Lugar de compra','Nombre','Marca','Presentación','Cantidad','Precio USD'],
-      rows:ev.map(function(e){return [fechaCorta(e.t),e.lugar,e.nombre,e.marca,e.pres,e.cant,e.precio];}),
-      numCols:[5,6],sheet:'Compras',file:'ReporteCompras',colw:[12,20,26,16,16,9,11]};
+      head:['Nombre','Marca','Presentación','Cantidad','Precio USD'],
+      rows:arr.map(function(x){return [x.nombre,x.marca,x.pres,x.cant,x.precio];}),
+      numCols:[3,4],
+      summary:'<div class="pr-sum"><div><b>$'+totalUSD.toFixed(2)+'</b>Total USD</div></div>',
+      totalRow:['Total USD','','','',Number(totalUSD.toFixed(2))],
+      sheet:'Compras',file:'ReporteCompras',colw:[28,18,18,11,11]};
   }
   if(kind==='recurrent'){
     var rs=document.getElementById('recSel'); var dd=rs?Number(rs.value):30;
-    var rr=DB.map(function(p){return {p:p,veces:countWindow(p.compras,dd),q:sumWindow(p.compras,dd)};}).filter(function(x){return x.veces>=2;}).sort(function(a,b){return azName(a.p,b.p);});
+    var rr=DB.map(function(p){return {p:p,veces:countWindow(p.compras,dd),q:sumWindow(p.compras,dd)};}).filter(function(x){return x.veces>=2;}).sort(function(a,b){return (b.q-a.q)||(b.veces-a.veces)||azName(a.p,b.p);});
     if(!rr.length){ toast('Sin productos recurrentes en el periodo'); return null; }
     return {fecha:fecha,title:'Compras Recurrentes',sub:'',
       head:['Nombre','Marca','Presentación','Tipo','Lugar de compra','Unidades','Precio USD','Última compra'],
@@ -1926,7 +1987,7 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'VAUR',version:20,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'VAUR',version:21,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
 }
 async function shareBackup(){

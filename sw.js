@@ -1,4 +1,4 @@
-const CACHE = 'vaur-v20';
+const CACHE = 'vaur-v21';
 const ASSETS = [
   './',
   './index.html',

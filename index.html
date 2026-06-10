@@ -145,6 +145,9 @@ html,body{height:100%;overflow:hidden;
   text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px;
   display:flex;align-items:center;gap:7px}
 .sec .ico{width:16px;height:16px;stroke:var(--p2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sectap{cursor:pointer}
+.sectap .chev{margin-left:auto;font-size:13px;transition:transform .15s ease;color:var(--p2)}
+.sectap.open .chev{transform:rotate(90deg)}
 
 /* ── SCANNER ──────────────────────────────────────────── */
 #scanWrap{position:relative;background:#0c1411;border-radius:14px;overflow:hidden;
@@ -596,7 +599,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <div class="sec ic-c"><svg class="ico" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Fotos</div>
     <div id="photoRow"></div>
     <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="onPhotoChange(event)">
-    <p class="note" style="margin-top:10px">Puedes agregar varias fotos (etiqueta, frente, modo de uso). Las imágenes se comprimen automáticamente para no ocupar espacio.</p>
+
   </div>
 
   <!-- DATOS -->
@@ -631,19 +634,19 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <div class="fg">
       <label>Cantidad comprada</label>
       <input type="number" id="fCant" placeholder="1" min="0" step="1" inputmode="numeric" value="1">
-      <div class="hint hg" style="font-size:12px">Si el producto ya existe (mismo nombre, marca y presentación), esta cantidad se suma a la existencia.</div>
+
     </div>
     <div class="fg">
       <label>Fecha de expiración <span class="opt">(opcional)</span></label>
       <input type="date" id="fExp">
-      <div class="hint hg" style="font-size:12px">Te avisaremos cuando falten 3 semanas o menos para vencer.</div>
+
     </div>
 
     <!-- CATEGORÍAS — MULTISELECCIÓN -->
     <div class="fg fg-cats">
       <label>Categorías <span class="opt">(puedes elegir varias)</span></label>
       <div class="chips" id="catChips"></div>
-      <div class="hint hg" style="font-size:12px">Toca todas las categorías que apliquen. Un mismo producto puede servir para varias superficies.</div>
+
     </div>
 
     <!-- USO ADECUADO -->
@@ -710,7 +713,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <button class="btn btn-o" onclick="out('inv','xlsx')">Excel</button>
     <button class="btn btn-o" onclick="out('inv','send')">Enviar</button>
   </div>
-  <div class="invbackup"><button onclick="shareBackup()">⬇︎ Respaldo de datos (JSON)</button></div>
+  <div class="invbackup"><button onclick="shareBackup()">⬇︎ Respaldo de datos</button></div>
   <div id="invList"></div>
 </div>
 
@@ -735,7 +738,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   <!-- FRECUENCIA DE COMPRAS -->
   <div class="card">
     <div class="sec ic-b"><svg class="ico" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Frecuencia de Compras</div>
-    <p class="note" style="margin:0 0 10px">Elige el periodo y descarga el reporte (incluye precio y total). El archivo sale ordenado de la A a la Z:</p>
+    <p class="note" style="margin:0 0 10px">Elige el periodo y descarga el reporte.</p>
     <div class="selwrap"><select id="freqSel" onchange="statPeriod=Number(this.value)">
       <option value="7">Esta Semana</option>
       <option value="30" selected>Mes</option>
@@ -753,7 +756,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   <!-- COMPRAS RECURRENTES -->
   <div class="card">
     <div class="sec ic-y"><svg class="ico" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Compras Recurrentes</div>
-    <p class="note" style="margin:0 0 10px">Productos que agregas seguido (se acaban rápido). Elige periodo y formato:</p>
+
     <div class="selwrap"><select id="recSel">
       <option value="7">Semana</option>
       <option value="30" selected>Mes</option>
@@ -771,7 +774,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   <!-- PRODUCTO SIN STOCK -->
   <div class="card">
     <div class="sec ic-c"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Producto Sin Stock</div>
-    <p class="note" style="margin:0 0 10px">Productos agotados (cantidad en cero). El documento se titula «Producto Agotado (No Disponible)» con nombre, marca, presentación, lugar de compra y precio.</p>
+    <p class="note" style="margin:0 0 10px">Productos agotados (cantidad en cero).</p>
     <div class="exprow">
       <button class="btn btn-o" onclick="out('nostock','pdf')">PDF</button>
       <button class="btn btn-o" onclick="out('nostock','xlsx')">Excel</button>
@@ -795,14 +798,24 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
 
   <!-- AJUSTES DE IMPRESIÓN: LOGO -->
   <div class="card">
-    <div class="sec ic-y"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Logo para el PDF</div>
-    <div id="logoBox"></div>
-    <div class="fg" style="margin-top:10px">
-      <label>Nombre de la empresa <span class="opt">(opcional, sale en el PDF)</span></label>
-      <input type="text" id="fEmpresa" placeholder="Mi Empresa, S.A." autocomplete="off" oninput="saveEmpresa()">
+    <div class="sec ic-y sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Logo Empresa<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <div id="logoBox"></div>
+      <div class="fg" style="margin-top:10px">
+        <label>Nombre de la empresa <span class="opt">(opcional, sale en el PDF)</span></label>
+        <input type="text" id="fEmpresa" placeholder="Mi Empresa, S.A." autocomplete="off" oninput="saveEmpresa()">
+      </div>
+      <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="onLogoChange(event)">
+      <p class="note" style="margin-top:6px">El logo y el nombre aparecerán en el encabezado del reporte PDF / impreso.</p>
     </div>
-    <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="onLogoChange(event)">
-    <p class="note" style="margin-top:6px">El logo y el nombre aparecerán en el encabezado del reporte PDF / impreso.</p>
+  </div>
+
+  <div class="card">
+    <div class="sec ic-b sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Seguridad<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <p class="note" style="margin:0 0 10px">PIN PROTECTOR (4 dígitos). Creado para evitar borrar inventario.</p>
+      <div id="pinBox"></div>
+    </div>
   </div>
 
   <button class="btn btn-d btn-w" onclick="clearAll()" style="margin-bottom:16px">
@@ -813,6 +826,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
 
 <!-- ══════════════ TAB 4: AYUDA ══════════════ -->
 <div class="page" id="page-help">
+
   <div class="card">
     <div class="sec"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en iPhone (Safari)</div>
     <div class="step">
@@ -825,16 +839,27 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   </div>
 
   <div class="card">
-    <div class="sec ic-b"><svg class="ico" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Si la cámara no enciende o sale negra</div>
-    <p class="note" style="margin:0 0 8px">La primera vez que escaneas, el teléfono pide permiso para la cámara. Si la pantalla queda negra o no abre, sigue estos pasos:</p>
+    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en Android (Chrome)</div>
     <div class="step">
-      <b class="n">1.</b> Cierra la cámara y vuelve a tocar <b>Escanear</b>. Cuando aparezca el aviso «¿Permitir cámara?», toca <b>Permitir</b>.<br>
+      <b class="n">1.</b> Abre esta página en <b>Chrome</b><br>
+      <b class="n">2.</b> Toca el menú <b>⋮</b> (tres puntos, arriba a la derecha)<br>
+      <b class="n">3.</b> Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b><br>
+      <b class="n">4.</b> Confirma con <b>Instalar</b>
+    </div>
+    <p class="note">Si aparece un aviso «Instalar app» abajo, también puedes tocarlo. En Samsung Internet: menú ☰ → «Añadir página a» → «Pantalla de inicio».</p>
+  </div>
+
+  <div class="card">
+    <div class="sec ic-b"><svg class="ico" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Si la cámara no enciende</div>
+    <p class="note" style="margin:0 0 8px">La primera vez que escaneas, el teléfono pide permiso para la cámara. Si no abre, sigue estos pasos:</p>
+    <div class="step">
+      <b class="n">1.</b> Cierra la cámara y vuelve a tocar <b>Escanear</b>. Cuando aparezca «¿Permitir cámara?», toca <b>Permitir</b>.<br>
       <b class="n">2.</b> Asegúrate de que <b>ninguna otra app</b> esté usando la cámara (ciérralas).
     </div>
     <p class="note" style="margin:10px 0 4px"><b>En iPhone (Safari), si ya la habías bloqueado:</b></p>
     <div class="step">
       <b class="n">a.</b> Abre <b>Ajustes</b> → <b>Safari</b> → <b>Cámara</b> → ponlo en <b>Permitir</b>.<br>
-      <b class="n">b.</b> Si usas la app desde el ícono de inicio: <b>Ajustes</b> → busca <b>VAUR</b> en la lista y activa la <b>Cámara</b>.<br>
+      <b class="n">b.</b> Si usas la app desde el ícono de inicio: <b>Ajustes</b> → busca <b>VAUR</b> y activa la <b>Cámara</b>.<br>
       <b class="n">c.</b> Cierra Safari/la app por completo y vuelve a abrirla. Toca <b>Escanear</b> otra vez.
     </div>
     <p class="note" style="margin:10px 0 4px"><b>En Android (Chrome):</b></p>
@@ -847,48 +872,50 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   </div>
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en Android (Chrome)</div>
-    <div class="step">
-      <b class="n">1.</b> Abre esta página en <b>Chrome</b><br>
-      <b class="n">2.</b> Toca el menú <b>⋮</b> (tres puntos, arriba a la derecha)<br>
-      <b class="n">3.</b> Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b><br>
-      <b class="n">4.</b> Confirma con <b>Instalar</b>
+    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cómo respaldar el inventario</div>
+    <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
+      <p style="margin-bottom:10px">El respaldo guarda <b>todo tu inventario</b> en un archivo, para no perderlo:</p>
+      <div class="step" style="background:var(--sf2)">
+        <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
+        <b class="n">2.</b> Abajo, toca <b>«Respaldo de datos»</b>.<br>
+        <b class="n">3.</b> Guárdalo donde quieras: <b>Archivos</b>, correo o WhatsApp.
+      </div>
+      <p class="note">Hazlo seguido (la app te lo recuerda los sábados). Si limpias los datos del navegador, podrás recuperar todo importando ese archivo. Respaldar es distinto a importar: respaldar <b>guarda</b> tu inventario; importar <b>carga</b> un archivo que ya tenías.</p>
     </div>
-    <p class="note">Si aparece un aviso «Instalar app» en la parte inferior, también puedes tocarlo directamente. En Samsung Internet: menú ☰ → «Añadir página a» → «Pantalla de inicio».</p>
   </div>
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cómo importar un archivo (.json)</div>
+    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Cómo importar un archivo (iPhone y Android)</div>
     <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
-      <p style="margin-bottom:10px">Si guardaste un respaldo (archivo <b>.json</b>) y quieres cargarlo en la app:</p>
+      <p style="margin-bottom:10px">Si ya tienes un respaldo y quieres cargarlo en la app (sirve igual en iPhone y Android):</p>
       <div class="step" style="background:var(--sf2)">
         <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
         <b class="n">2.</b> Toca el botón <b>Compartir</b> (el ícono ↑ arriba a la derecha).<br>
         <b class="n">3.</b> Elige <b>«Importar / Sincronizar»</b>.<br>
-        <b class="n">4.</b> Busca y selecciona tu archivo <b>.json</b> (en Archivos o Descargas).<br>
-        <b class="n">5.</b> Listo: los productos <b>se fusionan</b> (no se duplican; si uno ya existe, se conserva la versión más reciente).
+        <b class="n">4.</b> Busca y selecciona tu archivo (en Archivos o Descargas).<br>
+        <b class="n">5.</b> Listo: los productos <b>se fusionan</b> (no se duplican).
       </div>
-      <p class="note">Consejo: antes de importar, haz primero un <b>Respaldo (JSON)</b> de lo que ya tengas, por si acaso. El nombre del archivo no importa (aunque diga «CleanInv»), la app lee su contenido.</p>
+      <p class="note">Consejo: antes de importar, haz primero un respaldo de lo que ya tengas. El nombre del archivo no importa, la app lee su contenido.</p>
     </div>
   </div>
 
   <div class="card">
     <div class="sec"><svg class="ico" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>Compartir entre equipos</div>
     <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
-      <p style="margin-bottom:10px">Para pasar el inventario a otro teléfono sin volver a capturar los productos:</p>
+      <p style="margin-bottom:10px">Para pasar el inventario a otro teléfono sin volver a capturar:</p>
       <div class="step" style="background:var(--sf2)">
-        <b class="n">1.</b> En el equipo con datos: pestaña <b>Inventario → Compartir</b> (o el botón ↑ arriba)<br>
-        <b class="n">2.</b> Envía el archivo <b>.json</b> por WhatsApp, AirDrop o correo<br>
+        <b class="n">1.</b> En el equipo con datos: <b>Inventario → Compartir</b> (botón ↑ arriba)<br>
+        <b class="n">2.</b> Envía el archivo por WhatsApp, AirDrop o correo<br>
         <b class="n">3.</b> En el otro equipo abre el archivo, o usa <b>Compartir → Importar / Sincronizar</b><br>
-        <b class="n">4.</b> Los productos <b>se fusionan</b>: no se duplican y se conserva la versión más reciente
+        <b class="n">4.</b> Los productos <b>se fusionan</b>: no se duplican
       </div>
-      <p class="note">Repite el paso cuando agregues productos para mantener los equipos al día. La sincronización automática en tiempo real requiere un servidor en la nube; este método funciona sin internet y sin costos.</p>
+      <p class="note">Repite el paso cuando agregues productos para mantener los equipos al día.</p>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Niveles de seguridad (EPP)</div>
-    <div class="seglist">
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Niveles de seguridad (EPP)<span class="chev">▸</span></div>
+    <div class="seglist" style="display:none">
       <div style="background:var(--s-bajo-b);color:var(--s-bajo-t)"><b>Bajo —</b> Sin equipo especial. Lavarse las manos después.</div>
       <div style="background:var(--s-mod-b);color:var(--s-mod-t)"><b>Moderado —</b> Guantes de nitrilo o látex. Ventilar el área. Evitar ojos.</div>
       <div style="background:var(--s-alto-b);color:var(--s-alto-t)"><b>Alto —</b> Guantes gruesos + gafas selladas + mascarilla N95. No inhalar vapores.</div>
@@ -897,11 +924,11 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
   </div>
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3" y2="6"/><line x1="3" y1="12" x2="3" y2="12"/><line x1="3" y1="18" x2="3" y2="18"/></svg>Categorías y usos</div>
-    <div id="catHelp" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3" y2="6"/><line x1="3" y1="12" x2="3" y2="12"/><line x1="3" y1="18" x2="3" y2="18"/></svg>Categorías y usos<span class="chev">▸</span></div>
+    <div id="catHelp" style="display:none;font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 22 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 23 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -1152,7 +1179,7 @@ async function init(){
     await loadDB();
     setTipo(selTipo);
     document.getElementById('fEmpresa').value=AJ.empresa||'';
-    renderLogoBox();
+    renderLogoBox(); renderPinBox();
     renderPhotos(); buildInvCats(); renderInv(); renderStats(); updateBadge(); checkBackupReminder();
   }catch(err){
     try{ var t=document.getElementById('toast'); if(t){ t.textContent='Aviso: '+(err&&err.message||err); t.classList.add('on'); } }catch(e){}
@@ -1167,6 +1194,12 @@ async function init(){
 }
 function hoy(){ return new Date().toISOString().slice(0,10); }
 function updateBadge(){ document.getElementById('badge').textContent=DB.length; }
+function toggleSec(h){
+  var b=h.nextElementSibling; if(!b) return;
+  var mostrar=(b.style.display==='none');
+  b.style.display=mostrar?'':'none';
+  if(mostrar){ h.classList.add('open'); } else { h.classList.remove('open'); }
+}
 
 /* ═══════════════════════════════════════════════════════
    TABS
@@ -1622,6 +1655,7 @@ function renderInv(){
   }).join('');
 }
 function delProd(id){
+  if(!pedirPin('eliminar este producto')) return;
   if(!confirm('¿Eliminar este producto del inventario?')) return;
   DB=DB.filter(p=>p.id!==id);
   save(); renderInv(); renderStats(); updateBadge(); toast('Producto eliminado');
@@ -1644,6 +1678,7 @@ function adjQty(id,delta){
 }
 function clearAll(){
   if(!DB.length){ toast('El inventario está vacío'); return; }
+  if(!pedirPin('borrar TODO el inventario')) return;
   if(!confirm('¿Borrar los '+DB.length+' productos? No se puede deshacer.\n\nSugerencia: comparte un respaldo antes.')) return;
   DB=[]; save(); renderInv(); renderStats(); updateBadge(); toast('Inventario limpiado');
 }
@@ -2033,7 +2068,7 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'VAUR',version:22,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'VAUR',version:23,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
 }
 function checkBackupReminder(){
@@ -2119,6 +2154,57 @@ function onLogoChange(e){
   img.src=url;
 }
 function removeLogo(){ delete AJ.logo; saveAjustes(); renderLogoBox(); toast('Logo eliminado'); }
+function pinSet(){ return typeof AJ.pin==='string' && /^[0-9]{4}$/.test(AJ.pin); }
+function pedirPin(motivo){
+  if(!pinSet()) return true;
+  var v=prompt('🔒 Escribe tu PIN de 4 dígitos para '+motivo+':');
+  if(v===null) return false;
+  if((''+v).trim()===AJ.pin) return true;
+  toast('PIN incorrecto'); return false;
+}
+function pedirNuevoPin(){
+  var a=prompt('Escribe un PIN nuevo de 4 dígitos (solo números):');
+  if(a===null) return null;
+  a=(''+a).trim();
+  if(!/^[0-9]{4}$/.test(a)){ toast('El PIN debe ser 4 números'); return null; }
+  var b=prompt('Escribe otra vez el PIN para confirmar:');
+  if(b===null) return null;
+  if((''+b).trim()!==a){ toast('Los PIN no coinciden'); return null; }
+  return a;
+}
+function activarPin(){ var n=pedirNuevoPin(); if(n===null) return; AJ.pin=n; saveAjustes(); renderPinBox(); toast('✅ PIN activado'); }
+function cambiarPin(){ if(!pedirPin('cambiar el PIN')) return; var n=pedirNuevoPin(); if(n===null) return; AJ.pin=n; saveAjustes(); renderPinBox(); toast('✅ PIN cambiado'); }
+function quitarPin(){ if(!pedirPin('quitar el PIN')) return; delete AJ.pin; saveAjustes(); renderPinBox(); toast('PIN quitado'); }
+function resetearPin(){
+  var n=''+Math.floor(1000+Math.random()*9000);
+  AJ.pin=n; saveAjustes(); renderPinBox();
+  var w=document.getElementById('pinPdfWrap');
+  if(w) w.innerHTML='<div class="step" style="background:var(--sf2);margin-top:10px">Se generó un PIN nuevo. Para verlo, toca el botón (no se descarga solo).</div>'+
+    '<button class="btn btn-o btn-w" style="margin-top:8px" onclick="pinPDF()">Descargar PIN en PDF</button>';
+  toast('PIN reseteado');
+}
+function pinPDF(){
+  if(!pinSet()){ toast('No hay PIN configurado'); return; }
+  document.getElementById('printRoot').innerHTML=
+    reportHeader('PIN de seguridad — VAUR','',nowStr())+
+    '<div style="text-align:center;padding:28px 0"><div style="font-size:14px;color:#555">Tu PIN actual es:</div>'+
+    '<div style="font-size:46px;font-weight:800;letter-spacing:10px;margin:14px 0;color:#1A1A1A">'+esc(AJ.pin)+'</div>'+
+    '<div style="font-size:12px;color:#888">Guárdalo en un lugar seguro. Se pide para borrar productos o todo el inventario.</div></div>'+
+    '<div class="pr-foot">Documento generado con VAUR · '+nowStr()+'</div>';
+  toast('Abriendo PDF…'); setTimeout(function(){window.print();},300);
+}
+function renderPinBox(){
+  var el=document.getElementById('pinBox'); if(!el) return;
+  if(pinSet()){
+    el.innerHTML='<div class="step" style="background:var(--sf2);margin-bottom:10px">🔒 <b>PIN activado.</b> Se pedirá para borrar un producto o todo el inventario.</div>'+
+      '<button class="btn btn-o btn-w" style="margin-bottom:8px" onclick="cambiarPin()">Cambiar PIN</button>'+
+      '<button class="btn btn-o btn-w" style="margin-bottom:8px" onclick="quitarPin()">Quitar PIN</button>'+
+      '<button class="btn btn-o btn-w" onclick="resetearPin()">Resetear PIN (si lo olvidaste)</button>'+
+      '<div id="pinPdfWrap"></div>';
+  }else{
+    el.innerHTML='<button class="btn btn-o btn-w" onclick="activarPin()">Activar PIN PROTECTOR</button>';
+  }
+}
 function renderLogoBox(){
   const el=document.getElementById('logoBox'); if(!el) return;
   if(AJ.logo){

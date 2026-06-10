@@ -15,6 +15,8 @@
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 <style>
 /* ════════════════════════════════════════════════════════
    PALETA MATE — profesional y moderna
@@ -324,6 +326,9 @@ svg.bi{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .sec .ico{stroke:var(--p1)}
 .sec.ic-b{background:var(--blue-l)} .sec.ic-b{color:var(--blue)} .sec.ic-b .ico{stroke:var(--blue)}
 .sec.ic-y{background:var(--amber-l)} .sec.ic-y{color:var(--amber)} .sec.ic-y .ico{stroke:var(--amber)}
+#page-help .sec{background:var(--blue-l);color:var(--blue)}
+#page-help .sec .ico{stroke:var(--blue)}
+#page-help .sec .chev{color:var(--blue)}
 .sec.ic-c{background:var(--coral-l)} .sec.ic-c{color:var(--coral)} .sec.ic-c .ico{stroke:var(--coral)}
 /* Acento superior de las tarjetas del formulario */
 #page-scan .card{border-top:3px solid var(--p2)}
@@ -480,22 +485,22 @@ svg.bi{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 @media print{
   html,body{height:auto;overflow:visible;background:#fff;color:#111}
   #topbar,#tabs,#pages,#toast,#modal,#sheet,#lb{display:none!important}
-  #printRoot{display:block!important;position:static;padding:0}
-  @page{margin:14mm 12mm}
-  .pr-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #1A1A1A;padding-bottom:14px;margin-bottom:6px}
+  #printRoot{display:block!important;position:static;padding:14mm 12mm}
+  @page{margin:0}
+  .pr-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #1A1A1A;padding-bottom:12px;margin-bottom:0}
   .pr-mark{width:54px;height:54px;border-radius:10px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
   .pr-mark.pr-logo{background:#fff;border:1px solid #cccccc;padding:4px}
   .pr-mark svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .pr-title{flex:1}
-  .pr-title h1{font-size:21px;color:#1A1A1A;margin:0;letter-spacing:-.3px}
-  .pr-title p{font-size:12px;color:#666666;margin:3px 0 0}
-  .pr-meta{text-align:right;font-size:11px;color:#666666;line-height:1.6}
+  .pr-head .pr-co{font-size:21px;color:#1A1A1A;margin:0;letter-spacing:-.2px;line-height:1.5;flex:1}
+  .pr-subt{text-align:center;font-size:15px;color:#333333;margin:22px 0 16px;line-height:1.5}
   .pr-sum{display:flex;gap:24px;margin:14px 0 18px;font-size:12px;color:#333333}
   .pr-sum b{display:block;font-size:20px;color:#2B6CA3}
   .pr-sum .pr-zero b{color:#b91c1c}
   .pr-sum .pr-zero{color:#b91c1c}
   .pr-sum .pr-exp b{color:#b45309}
   .pr-sum .pr-exp{color:#b45309}
+  .pr-pie{display:flex;gap:22px;align-items:center;margin:8px 0 18px;flex-wrap:wrap}
+  .pr-pie-leg{flex:1;min-width:210px}
   table.pr{width:100%;border-collapse:collapse;font-size:10.5px}
   table.pr th{background:#C3D7E6;color:#1C3A52;text-align:left;padding:7px 8px;font-weight:700;border:1px solid #A9C2D4}
   table.pr td{padding:7px 8px;border:1px solid #D7E0E7;vertical-align:top;color:#222222}
@@ -517,6 +522,8 @@ svg.bi{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .fg-uso>label{background:#C7ECE9;color:#15463F;padding:5px 12px;border-radius:9px;display:inline-block}
 body.dark .fg-cats>label{background:#2E3A1C;color:#D8E9B0}
 body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
+.fg-seg>label{background:#EDE0AC;color:#5C4D14;padding:5px 12px;border-radius:9px;display:inline-block}
+body.dark .fg-seg>label{background:#3A3415;color:#E6DBA8}
 .otros-input{width:100%;margin-top:9px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:var(--sf);color:var(--ink);font-size:15px}
 /* ── botones directos de compra (Amazon / Google) ── */
 .buybtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
@@ -630,6 +637,10 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
         <span class="chip" id="tp-Otros" onclick="setTipo('Otros',this)">Otros</span>
       </div>
       <input type="text" id="tipoOtros" class="otros-input" placeholder="Escribe el tipo…" style="display:none">
+      <div id="equipoFields" style="display:none">
+        <input type="text" id="fModelo" class="otros-input" placeholder="Modelo N°" autocomplete="off">
+        <input type="text" id="fSerial" class="otros-input" placeholder="Serial N°" autocomplete="off" style="margin-top:8px">
+      </div>
     </div>
     <div class="fg">
       <label>Cantidad comprada</label>
@@ -656,7 +667,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     </div>
 
     <!-- SEGURIDAD -->
-    <div class="fg">
+    <div class="fg fg-seg">
       <label>Nivel de seguridad</label>
       <div class="chips" id="segChips">
         <span class="chip" id="sc-bajo" onclick="setSeg('Bajo',this)">Bajo</span>
@@ -674,7 +685,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
 
     <div class="fr2">
       <div class="fg">
-        <label>Lugar de compra <span class="opt">(opcional)</span></label>
+        <label>Lugar de compra <span class="opt">(Proveedor)</span></label>
         <input type="text" id="fTnd" placeholder="PriceSmart, EPA…" autocomplete="off">
       </div>
       <div class="fg">
@@ -793,10 +804,29 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     </div>
   </div>
 
-  <div class="card"><div class="sec"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Por categoría</div><div id="catB"></div></div>
-  <div class="card"><div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Por nivel de seguridad</div><div id="segB"></div></div>
+  <div class="card"><div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Por categoría<span class="chev">▸</span></div><div id="catB" class="seccol" style="display:none"></div></div>
+  <div class="card"><div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Por nivel de seguridad<span class="chev">▸</span></div><div id="segB" class="seccol" style="display:none"></div></div>
 
   <!-- AJUSTES DE IMPRESIÓN: LOGO -->
+  <div class="card">
+    <div class="sec ic-b sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 3 4-6"/></svg>Proveedores<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <p class="note" style="margin:0 0 10px">Compras por proveedor (Lugar de compra). El PDF incluye gráfico circular.</p>
+      <div class="selwrap"><select id="provSel" onchange="statPeriod=Number(this.value)">
+        <option value="30" selected>Mes</option>
+        <option value="90">3 meses</option>
+        <option value="180">6 meses</option>
+        <option value="365">1 año</option>
+        <option value="100000">Todo</option>
+      </select></div>
+      <div class="exprow">
+        <button class="btn btn-o" onclick="out('proveedores','pdf')">PDF</button>
+        <button class="btn btn-o" onclick="out('proveedores','xlsx')">Excel</button>
+        <button class="btn btn-o" onclick="out('proveedores','send')">Enviar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="sec ic-y sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Logo Empresa<span class="chev">▸</span></div>
     <div class="seccol" style="display:none">
@@ -828,88 +858,100 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
 <div class="page" id="page-help">
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en iPhone (Safari)</div>
-    <div class="step">
-      <b class="n">1.</b> Abre esta página en <b>Safari</b><br>
-      <b class="n">2.</b> Toca el botón <b>Compartir</b> (cuadro con flecha ↑, barra inferior)<br>
-      <b class="n">3.</b> Elige <b>«Añadir a pantalla de inicio»</b><br>
-      <b class="n">4.</b> Toca <b>Añadir</b> — quedará como una app
-    </div>
-    <p class="note">La app guarda tus datos en el dispositivo y funciona sin internet.</p>
-  </div>
-
-  <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en Android (Chrome)</div>
-    <div class="step">
-      <b class="n">1.</b> Abre esta página en <b>Chrome</b><br>
-      <b class="n">2.</b> Toca el menú <b>⋮</b> (tres puntos, arriba a la derecha)<br>
-      <b class="n">3.</b> Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b><br>
-      <b class="n">4.</b> Confirma con <b>Instalar</b>
-    </div>
-    <p class="note">Si aparece un aviso «Instalar app» abajo, también puedes tocarlo. En Samsung Internet: menú ☰ → «Añadir página a» → «Pantalla de inicio».</p>
-  </div>
-
-  <div class="card">
-    <div class="sec ic-b"><svg class="ico" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Si la cámara no enciende</div>
-    <p class="note" style="margin:0 0 8px">La primera vez que escaneas, el teléfono pide permiso para la cámara. Si no abre, sigue estos pasos:</p>
-    <div class="step">
-      <b class="n">1.</b> Cierra la cámara y vuelve a tocar <b>Escanear</b>. Cuando aparezca «¿Permitir cámara?», toca <b>Permitir</b>.<br>
-      <b class="n">2.</b> Asegúrate de que <b>ninguna otra app</b> esté usando la cámara (ciérralas).
-    </div>
-    <p class="note" style="margin:10px 0 4px"><b>En iPhone (Safari), si ya la habías bloqueado:</b></p>
-    <div class="step">
-      <b class="n">a.</b> Abre <b>Ajustes</b> → <b>Safari</b> → <b>Cámara</b> → ponlo en <b>Permitir</b>.<br>
-      <b class="n">b.</b> Si usas la app desde el ícono de inicio: <b>Ajustes</b> → busca <b>VAUR</b> y activa la <b>Cámara</b>.<br>
-      <b class="n">c.</b> Cierra Safari/la app por completo y vuelve a abrirla. Toca <b>Escanear</b> otra vez.
-    </div>
-    <p class="note" style="margin:10px 0 4px"><b>En Android (Chrome):</b></p>
-    <div class="step">
-      <b class="n">a.</b> Toca el <b>candado 🔒</b> junto a la dirección → <b>Permisos</b> → activa <b>Cámara</b>.<br>
-      <b class="n">b.</b> O ve a <b>Ajustes</b> → <b>Aplicaciones</b> → <b>Chrome</b> → <b>Permisos</b> → <b>Cámara</b> → <b>Permitir</b>.<br>
-      <b class="n">c.</b> Recarga la página e intenta de nuevo.
-    </div>
-    <p class="note" style="margin-top:10px">Importante: la cámara solo funciona con la página abierta por <b>https</b> (el candado). Si nada funciona, puedes agregar el producto con <b>«Entrada manual»</b> sin escanear.</p>
-  </div>
-
-  <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cómo respaldar el inventario</div>
-    <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
-      <p style="margin-bottom:10px">El respaldo guarda <b>todo tu inventario</b> en un archivo, para no perderlo:</p>
-      <div class="step" style="background:var(--sf2)">
-        <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
-        <b class="n">2.</b> Abajo, toca <b>«Respaldo de datos»</b>.<br>
-        <b class="n">3.</b> Guárdalo donde quieras: <b>Archivos</b>, correo o WhatsApp.
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en iPhone (Safari)<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <div class="step">
+        <b class="n">1.</b> Abre esta página en <b>Safari</b><br>
+        <b class="n">2.</b> Toca el botón <b>Compartir</b> (cuadro con flecha ↑, barra inferior)<br>
+        <b class="n">3.</b> Elige <b>«Añadir a pantalla de inicio»</b><br>
+        <b class="n">4.</b> Toca <b>Añadir</b> — quedará como una app
       </div>
-      <p class="note">Hazlo seguido (la app te lo recuerda los sábados). Si limpias los datos del navegador, podrás recuperar todo importando ese archivo. Respaldar es distinto a importar: respaldar <b>guarda</b> tu inventario; importar <b>carga</b> un archivo que ya tenías.</p>
+      <p class="note">La app guarda tus datos en el dispositivo y funciona sin internet.</p>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Cómo importar un archivo (iPhone y Android)</div>
-    <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
-      <p style="margin-bottom:10px">Si ya tienes un respaldo y quieres cargarlo en la app (sirve igual en iPhone y Android):</p>
-      <div class="step" style="background:var(--sf2)">
-        <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
-        <b class="n">2.</b> Toca el botón <b>Compartir</b> (el ícono ↑ arriba a la derecha).<br>
-        <b class="n">3.</b> Elige <b>«Importar / Sincronizar»</b>.<br>
-        <b class="n">4.</b> Busca y selecciona tu archivo (en Archivos o Descargas).<br>
-        <b class="n">5.</b> Listo: los productos <b>se fusionan</b> (no se duplican).
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Instalar en Android (Chrome)<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <div class="step">
+        <b class="n">1.</b> Abre esta página en <b>Chrome</b><br>
+        <b class="n">2.</b> Toca el menú <b>⋮</b> (tres puntos, arriba a la derecha)<br>
+        <b class="n">3.</b> Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b><br>
+        <b class="n">4.</b> Confirma con <b>Instalar</b>
       </div>
-      <p class="note">Consejo: antes de importar, haz primero un respaldo de lo que ya tengas. El nombre del archivo no importa, la app lee su contenido.</p>
+      <p class="note">Si aparece un aviso «Instalar app» abajo, también puedes tocarlo. En Samsung Internet: menú ☰ → «Añadir página a» → «Pantalla de inicio».</p>
     </div>
   </div>
 
   <div class="card">
-    <div class="sec"><svg class="ico" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>Compartir entre equipos</div>
-    <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
-      <p style="margin-bottom:10px">Para pasar el inventario a otro teléfono sin volver a capturar:</p>
-      <div class="step" style="background:var(--sf2)">
-        <b class="n">1.</b> En el equipo con datos: <b>Inventario → Compartir</b> (botón ↑ arriba)<br>
-        <b class="n">2.</b> Envía el archivo por WhatsApp, AirDrop o correo<br>
-        <b class="n">3.</b> En el otro equipo abre el archivo, o usa <b>Compartir → Importar / Sincronizar</b><br>
-        <b class="n">4.</b> Los productos <b>se fusionan</b>: no se duplican
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Si la cámara no enciende<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <p class="note" style="margin:0 0 8px">La primera vez que escaneas, el teléfono pide permiso para la cámara. Si no abre, sigue estos pasos:</p>
+      <div class="step">
+        <b class="n">1.</b> Cierra la cámara y vuelve a tocar <b>Escanear</b>. Cuando aparezca «¿Permitir cámara?», toca <b>Permitir</b>.<br>
+        <b class="n">2.</b> Asegúrate de que <b>ninguna otra app</b> esté usando la cámara (ciérralas).
       </div>
-      <p class="note">Repite el paso cuando agregues productos para mantener los equipos al día.</p>
+      <p class="note" style="margin:10px 0 4px"><b>En iPhone (Safari), si ya la habías bloqueado:</b></p>
+      <div class="step">
+        <b class="n">a.</b> Abre <b>Ajustes</b> → <b>Safari</b> → <b>Cámara</b> → ponlo en <b>Permitir</b>.<br>
+        <b class="n">b.</b> Si usas la app desde el ícono de inicio: <b>Ajustes</b> → busca <b>VAUR</b> y activa la <b>Cámara</b>.<br>
+        <b class="n">c.</b> Cierra Safari/la app por completo y vuelve a abrirla. Toca <b>Escanear</b> otra vez.
+      </div>
+      <p class="note" style="margin:10px 0 4px"><b>En Android (Chrome):</b></p>
+      <div class="step">
+        <b class="n">a.</b> Toca el <b>candado 🔒</b> junto a la dirección → <b>Permisos</b> → activa <b>Cámara</b>.<br>
+        <b class="n">b.</b> O ve a <b>Ajustes</b> → <b>Aplicaciones</b> → <b>Chrome</b> → <b>Permisos</b> → <b>Cámara</b> → <b>Permitir</b>.<br>
+        <b class="n">c.</b> Recarga la página e intenta de nuevo.
+      </div>
+      <p class="note" style="margin-top:10px">Importante: la cámara solo funciona con la página abierta por <b>https</b> (el candado). Si nada funciona, puedes agregar el producto con <b>«Entrada manual»</b> sin escanear.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cómo respaldar el inventario<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
+        <p style="margin-bottom:10px">El respaldo guarda <b>todo tu inventario</b> en un archivo, para no perderlo:</p>
+        <div class="step" style="background:var(--sf2)">
+          <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
+          <b class="n">2.</b> Abajo, toca <b>«Respaldo de datos»</b>.<br>
+          <b class="n">3.</b> Guárdalo donde quieras: <b>Archivos</b>, correo o WhatsApp.
+        </div>
+        <p class="note">Hazlo seguido (la app te lo recuerda los sábados). Si limpias los datos del navegador, podrás recuperar todo importando ese archivo. Respaldar es distinto a importar: respaldar <b>guarda</b> tu inventario; importar <b>carga</b> un archivo que ya tenías.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Cómo importar un archivo (iPhone y Android)<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
+        <p style="margin-bottom:10px">Si ya tienes un respaldo y quieres cargarlo en la app (sirve igual en iPhone y Android):</p>
+        <div class="step" style="background:var(--sf2)">
+          <b class="n">1.</b> Abre la pestaña <b>Inventario</b>.<br>
+          <b class="n">2.</b> Toca el botón <b>Compartir</b> (el ícono ↑ arriba a la derecha).<br>
+          <b class="n">3.</b> Elige <b>«Importar / Sincronizar»</b>.<br>
+          <b class="n">4.</b> Busca y selecciona tu archivo (en Archivos o Descargas).<br>
+          <b class="n">5.</b> Listo: los productos <b>se fusionan</b> (no se duplican).
+        </div>
+        <p class="note">Consejo: antes de importar, haz primero un respaldo de lo que ya tengas. El nombre del archivo no importa, la app lee su contenido.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sectap" onclick="toggleSec(this)"><svg class="ico" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>Compartir entre equipos<span class="chev">▸</span></div>
+    <div class="seccol" style="display:none">
+      <div style="font-size:13.5px;color:var(--muted);line-height:1.7">
+        <p style="margin-bottom:10px">Para pasar el inventario a otro teléfono sin volver a capturar:</p>
+        <div class="step" style="background:var(--sf2)">
+          <b class="n">1.</b> En el equipo con datos: <b>Inventario → Compartir</b> (botón ↑ arriba)<br>
+          <b class="n">2.</b> Envía el archivo por WhatsApp, AirDrop o correo<br>
+          <b class="n">3.</b> En el otro equipo abre el archivo, o usa <b>Compartir → Importar / Sincronizar</b><br>
+          <b class="n">4.</b> Los productos <b>se fusionan</b>: no se duplican
+        </div>
+        <p class="note">Repite el paso cuando agregues productos para mantener los equipos al día.</p>
+      </div>
     </div>
   </div>
 
@@ -928,7 +970,7 @@ body.dark .fg-uso>label{background:#163A37;color:#BDE6E3}
     <div id="catHelp" style="display:none;font-size:13px;color:var(--muted);line-height:1.8"></div>
   </div>
 
-  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 23 · funciona sin conexión</p>
+  <p class="note" style="text-align:center;margin-bottom:8px">VAUR · versión 24 · funciona sin conexión</p>
 </div>
 
 </div><!-- /pages -->
@@ -1433,6 +1475,8 @@ function setTipo(t){
   TIPOS.forEach(x=>{ const c=document.getElementById('tp-'+x); if(c) c.classList.toggle('sel',x===selTipo); });
   const ot=document.getElementById('tipoOtros');
   if(ot){ if(selTipo==='Otros'){ ot.style.display='block'; } else { ot.style.display='none'; ot.value=''; } }
+  const eq=document.getElementById('equipoFields');
+  if(eq) eq.style.display=(selTipo==='Equipo')?'block':'none';
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1486,6 +1530,8 @@ function saveProd(){
     tienda:document.getElementById('fTnd').value.trim(),
     precio:(function(){ const v=document.getElementById('fPrc').value; return v===''?'':(parseFloat(v)>=0?parseFloat(v).toFixed(2):''); })(),
     notas:document.getElementById('fNot').value.trim(),
+    modelo:(selTipo==='Equipo')?document.getElementById('fModelo').value.trim():'',
+    serial:(selTipo==='Equipo')?document.getElementById('fSerial').value.trim():'',
     fotos:[...photos],
     updated:Date.now()
   };
@@ -1551,6 +1597,9 @@ function startEdit(id){
   document.getElementById('fTnd').value=p.tienda||'';
   document.getElementById('fPrc').value=p.precio||'';
   document.getElementById('fNot').value=p.notas||'';
+  document.getElementById('fModelo').value=p.modelo||'';
+  document.getElementById('fSerial').value=p.serial||'';
+  if((p.tipo||'')==='Equipo'){ var _eq=document.getElementById('equipoFields'); if(_eq) _eq.style.display='block'; }
   curCode=(p.codigo&&p.codigo!=='Manual')?p.codigo:'';
   // categorías
   selCats=[...(p.categorias||[])];
@@ -1592,6 +1641,9 @@ function resetForm(){
   cb.innerHTML='<svg class="bi" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="14" y1="3" x2="14" y2="21"/><line x1="3" y1="9" x2="9" y2="9"/><line x1="15" y1="9" x2="21" y2="9"/><line x1="3" y1="14" x2="21" y2="14"/></svg> Sin código detectado';
   curCode=''; selSeg=''; selUsos=[]; selCats=[]; photos=[]; editingId=null; otrosOn=false;
   const _to=document.getElementById('tipoOtros'); if(_to){ _to.value=''; _to.style.display='none'; }
+  var _fm=document.getElementById('fModelo'); if(_fm) _fm.value='';
+  var _fs=document.getElementById('fSerial'); if(_fs) _fs.value='';
+  var _eq=document.getElementById('equipoFields'); if(_eq) _eq.style.display='none';
   document.getElementById('fCant').value='1';
   setTipo('Producto');
   document.getElementById('btnSaveTxt').textContent='Agregar al inventario';
@@ -1697,6 +1749,7 @@ function openModal(id){
     ['Tipo',p.tipo||'Producto'],['Cantidad en inventario',String(p.cantidad!=null?p.cantidad:0)],
     ['Fecha de expiración',p.expira?(p.expira+(expText(p)?' · '+expText(p):'')):''],
     ['Código',p.codigo],['Categorías',cats],['Uso adecuado',p.usoAdecuado],
+    ['Modelo N°',p.modelo],['Serial N°',p.serial],
     ['Seguridad',p.seguridad],['Instrucciones',p.etiqueta],
     ['Lugar de compra',p.tienda],['Precio',(p.precio!==''&&p.precio!=null)?'$'+p.precio:''],
     ['Fecha',p.fecha],['Notas',p.notas]
@@ -1864,11 +1917,107 @@ function repTableHTML(r){
   }).join('');
   return '<table class="pr"><thead>'+head+'</thead><tbody>'+body+'</tbody></table>';
 }
-function repPDF(r){
+function pieSVG(parts,total){
+  if(!parts||!parts.length||!(total>0)) return '';
+  var colors=['#2B6CA3','#E08A1E','#3F9E5A','#B0476B','#7A5CB0','#C0392B','#16A6A6','#8A8D2B','#A0552B','#566B8A'];
+  var cx=110,cy=110,r=95,ang=-Math.PI/2,paths='';
+  parts.forEach(function(p,i){
+    var frac=p.value/total, a2=ang+frac*2*Math.PI;
+    var col=colors[i%colors.length];
+    if(frac>=0.9999){ paths+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+col+'"/>'; }
+    else{
+      var x1=(cx+r*Math.cos(ang)).toFixed(1),y1=(cy+r*Math.sin(ang)).toFixed(1);
+      var x2=(cx+r*Math.cos(a2)).toFixed(1),y2=(cy+r*Math.sin(a2)).toFixed(1);
+      var large=frac>0.5?1:0;
+      paths+='<path d="M'+cx+','+cy+' L'+x1+','+y1+' A'+r+','+r+' 0 '+large+' 1 '+x2+','+y2+' Z" fill="'+col+'" stroke="#fff" stroke-width="1"/>';
+    }
+    ang=a2;
+  });
+  var legend=parts.map(function(p,i){
+    var pct=(p.value/total*100).toFixed(1);
+    return '<div style="display:flex;align-items:center;gap:8px;font-size:12px;margin:4px 0"><span style="width:12px;height:12px;border-radius:3px;background:'+colors[i%colors.length]+';display:inline-block;flex-shrink:0"></span><span style="flex:1">'+esc(p.label)+'</span><span style="color:#555">$'+p.value.toFixed(2)+'</span><span style="font-weight:700;color:#1A1A1A;min-width:46px;text-align:right">'+pct+'%</span></div>';
+  }).join('');
+  return '<div class="pr-pie"><div style="text-align:center"><svg viewBox="0 0 220 220" width="200" height="200">'+paths+'</svg><div style="font-size:11px;color:#777;margin-top:2px">% de compras por proveedor</div></div><div class="pr-pie-leg">'+legend+'</div></div>';
+}
+function repPrint(r){
   document.getElementById('printRoot').innerHTML=
-    reportHeader(r.title,r.sub,r.fecha)+(r.summary||'')+repTableHTML(r)+
+    reportHeader(r.title,r.sub,r.fecha)+(r.summary||'')+(r.preHTML||'')+repTableHTML(r)+
     '<div class="pr-foot">'+esc(r.foot||('Documento generado con VAUR · '+r.fecha))+'</div>';
   toast('Abriendo PDF…'); setTimeout(function(){window.print();},300);
+}
+function sharePDF(blob,fname,title){
+  try{
+    if(navigator.canShare){
+      var f=new File([blob],fname,{type:'application/pdf'});
+      if(navigator.canShare({files:[f]})){
+        navigator.share({files:[f],title:title}).catch(function(e){ if(!(e&&e.name==='AbortError')) dlBlob(blob,fname); });
+        return;
+      }
+    }
+  }catch(e){}
+  dlBlob(blob,fname);
+}
+function repPDF(r){
+  if(!(window.jspdf && window.jspdf.jsPDF)){ toast('Generador PDF no cargó; uso PDF simple'); repPrint(r); return; }
+  try{
+    var JS=window.jspdf.jsPDF;
+    var doc=new JS({unit:'pt',format:'letter'});
+    var W=doc.internal.pageSize.getWidth(), M=40;
+    var empresa=(AJ.empresa||'').trim();
+    var hy=46;
+    if(AJ.logo){ try{ doc.addImage(AJ.logo,'PNG',M,hy-4,40,40); }catch(e){ doc.setFillColor(26,26,26); doc.roundedRect(M,hy-4,40,40,5,5,'F'); } }
+    else { doc.setFillColor(26,26,26); doc.roundedRect(M,hy-4,40,40,5,5,'F'); }
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(26,26,26);
+    doc.text(empresa||'', M+52, hy+20);
+    doc.setDrawColor(26,26,26); doc.setLineWidth(2.4); doc.line(M, hy+42, W-M, hy+42);
+    doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(51,51,51);
+    var subY=hy+42+30;
+    doc.text(r.title||'', W/2, subY, {align:'center'});
+    var startY=subY+18;
+    if(r.pie && r.pie.parts && r.pie.parts.length){
+      doc.setFontSize(11); doc.setTextColor(43,108,163);
+      doc.text('Total compras: $'+r.pie.total.toFixed(2)+'   ·   Proveedores: '+r.pie.parts.length, M, startY);
+      startY+=12;
+      try{
+        var cx=M+62, cy=startY+58, rad=50, ang=-Math.PI/2;
+        var cols=[[43,108,163],[224,138,30],[63,158,90],[176,71,107],[122,92,176],[192,57,43],[22,166,166],[138,141,43]];
+        var ctx=doc.context2d;
+        r.pie.parts.forEach(function(p,i){
+          var a2=ang+(p.value/r.pie.total)*2*Math.PI; var c=cols[i%cols.length];
+          ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,rad,ang,a2); ctx.closePath();
+          ctx.fillStyle='rgb('+c[0]+','+c[1]+','+c[2]+')'; ctx.fill(); ang=a2;
+        });
+        var ly=startY+10; doc.setFontSize(9);
+        r.pie.parts.forEach(function(p,i){
+          var c=cols[i%cols.length]; doc.setFillColor(c[0],c[1],c[2]); doc.rect(M+140,ly-7,9,9,'F');
+          doc.setTextColor(51,51,51);
+          doc.text(p.label+'  —  $'+p.value.toFixed(2)+'  ('+(p.value/r.pie.total*100).toFixed(1)+'%)', M+155, ly);
+          ly+=15;
+        });
+        startY=Math.max(cy+rad+14, ly+6);
+      }catch(e){ startY+=6; }
+    }
+    var head=[['#'].concat(r.head)];
+    var body=r.rows.map(function(row,i){ return [String(i+1)].concat(row.map(function(c){return c==null?'':String(c);})); });
+    if(r.totalRow){ body.push([''].concat(r.totalRow.map(function(c){return c==null?'':String(c);}))); }
+    var colStyles={}; (r.numCols||[]).forEach(function(ci){ colStyles[ci+1]={halign:'right'}; });
+    doc.autoTable({
+      head:head, body:body, startY:startY, margin:{left:M,right:M,bottom:48},
+      styles:{fontSize:8.5,cellPadding:4,lineColor:[215,224,231],lineWidth:0.5,textColor:[34,34,34],overflow:'linebreak'},
+      headStyles:{fillColor:[195,215,230],textColor:[28,58,82],fontStyle:'bold',lineColor:[169,194,212]},
+      columnStyles:colStyles,
+      didParseCell:function(d){ if(d.section==='body' && r.zeroCol!=null){ var raw=body[d.row.index]; if(raw && Number(raw[r.zeroCol+1])===0) d.cell.styles.textColor=[185,28,28]; } },
+      didDrawPage:function(d){
+        var ph=doc.internal.pageSize.getHeight();
+        doc.setFontSize(8); doc.setTextColor(138,138,138); doc.setFont('helvetica','normal');
+        doc.text('Documento generado con VAUR · '+r.fecha, M, ph-24);
+        doc.text('Página '+d.pageNumber+' de {totalP}', W-M, ph-24, {align:'right'});
+      }
+    });
+    if(typeof doc.putTotalPages==='function') doc.putTotalPages('{totalP}');
+    toast('Generando PDF…');
+    sharePDF(doc.output('blob'),(r.file||'Reporte')+'_'+hoy()+'.pdf',r.title||'Reporte VAUR');
+  }catch(e){ toast('PDF avanzado falló; uso PDF simple'); repPrint(r); }
 }
 function repWB(r){
   var aoa=[r.head].concat(r.rows.map(function(row){return row.map(function(c){return c==null?'':c;});}));
@@ -1928,7 +2077,7 @@ function weekTitle(){
   return 'Reporte de Compras de Esta Semana ('+rango+')';
 }
 function buildReport(kind){
-  var fecha=nowStr();
+  var fecha=new Date().toLocaleDateString('es',{day:'numeric',month:'long',year:'numeric'});
   if(kind==='inv'){
     var list=invFiltered().slice().sort(azName);
     if(!list.length){ toast('No hay productos en esta vista'); return null; }
@@ -1936,9 +2085,9 @@ function buildReport(kind){
     var catSet=new Set(); list.forEach(function(p){catsArr(p).forEach(function(c){catSet.add(c);});});
     var ceros=list.filter(function(p){return (Number(p.cantidad)||0)===0;}).length;
     return {fecha:fecha,
-      title:'Inventario de Productos de Limpieza'+(filterCat?' — '+filterCat:''),
-      sub:(filterCat?('Categoría: '+filterCat):''),
-      head:['Fecha','Nombre','Marca','Presentación','Tipo','Cantidad','Categorías','Lugar de compra','Precio USD','Expira'],
+      title:'Reporte Inventario de productos'+(filterCat?' - '+filterCat:''),
+      sub:'',
+      head:['Fecha','Nombre','Marca','Presentación','Tipo','Cantidad','Categorías','Proveedor','Precio USD','Expira'],
       rows:list.map(function(p){return [p.fecha,p.nombre,p.marca,p.presentacion,p.tipo||'Producto',(Number(p.cantidad)||0),catsArr(p).join(', '),p.tienda||'',(p.precio!==''&&p.precio!=null)?Number(p.precio):'',p.expira||''];}),
       zeroCol:5,numCols:[5,8],
       summary:'<div class="pr-sum"><div><b>'+list.length+'</b>Productos</div><div><b>'+unidades+'</b>Unidades</div><div><b>'+catSet.size+'</b>Categorías</div>'+(ceros?'<div class="pr-zero"><b>'+ceros+'</b>Stock cero</div>':'')+'</div>',
@@ -1948,8 +2097,8 @@ function buildReport(kind){
   if(kind==='nostock'){
     var l2=DB.filter(function(p){return (Number(p.cantidad)||0)===0;}).sort(azName);
     if(!l2.length){ toast('No hay productos agotados 👍'); return null; }
-    return {fecha:fecha,title:'Producto Agotado (No Disponible)',sub:'',
-      head:['Nombre','Marca','Presentación','Lugar de compra','Precio USD'],
+    return {fecha:fecha,title:'Reporte Producto Agotado (No Disponible)',sub:'',
+      head:['Nombre','Marca','Presentación','Proveedor','Precio USD'],
       rows:l2.map(function(p){return [p.nombre,p.marca,p.presentacion,p.tienda||'',(p.precio!==''&&p.precio!=null)?Number(p.precio):''];}),
       numCols:[4],
       summary:'<div class="pr-sum"><div class="pr-zero"><b>'+l2.length+'</b>Agotados</div></div>',
@@ -1959,12 +2108,45 @@ function buildReport(kind){
     var l3=DB.filter(isExpiring).sort(azName);
     if(!l3.length){ toast('No hay productos vencidos ni próximos 👍'); return null; }
     var venc=l3.filter(function(p){return expStatus(p).state==='expired';}).length;
-    return {fecha:fecha,title:'Productos por vencer',sub:'',
-      head:['Nombre','Marca','Presentación','Tipo','Fecha exp.','Estado','Cantidad','Lugar de compra','Precio USD'],
+    return {fecha:fecha,title:'Reporte Productos por vencer',sub:'',
+      head:['Nombre','Marca','Presentación','Tipo','Fecha exp.','Estado','Cantidad','Proveedor','Precio USD'],
       rows:l3.map(function(p){return [p.nombre,p.marca,p.presentacion,p.tipo||'Producto',p.expira,expText(p),(Number(p.cantidad)||0),p.tienda||'',(p.precio!==''&&p.precio!=null)?Number(p.precio):''];}),
       numCols:[6,8],
       summary:'<div class="pr-sum"><div class="pr-exp"><b>'+venc+'</b>Vencidos</div><div class="pr-exp"><b>'+(l3.length-venc)+'</b>Por vencer</div></div>',
       foot:'Productos vencidos o próximos a vencer · '+fecha,sheet:'Por vencer',file:'PorVencer',colw:[26,16,16,13,12,18,9,18,11]};
+  }
+  if(kind==='proveedores'){
+    var dP=statPeriod, limP=Date.now()-dP*DAY;
+    var byMP={}, monthTot={}, provTot={}, grand=0, monthOrder=[];
+    DB.forEach(function(p){
+      var prov=(p.tienda&&p.tienda.trim())?p.tienda.trim():'Sin proveedor';
+      var precio=(p.precio!==''&&p.precio!=null)?Number(p.precio):0;
+      (Array.isArray(p.compras)?p.compras:[]).forEach(function(c){
+        var t=evTs(c.f); if(t<limP) return;
+        var dt=new Date(t); var mk=dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2);
+        var monto=(Number(c.c)||0)*precio;
+        if(!byMP[mk]){ byMP[mk]={__label:mesNombre(dt.getMonth())+' '+dt.getFullYear()}; monthTot[mk]=0; monthOrder.push(mk); }
+        byMP[mk][prov]=(byMP[mk][prov]||0)+monto;
+        monthTot[mk]+=monto; provTot[prov]=(provTot[prov]||0)+monto; grand+=monto;
+      });
+    });
+    if(!(grand>0)){ toast('Sin compras con monto en el periodo elegido'); return null; }
+    monthOrder.sort();
+    var rowsP=[];
+    monthOrder.forEach(function(mk){
+      var provs=Object.keys(byMP[mk]).filter(function(k){return k!=='__label';})
+        .sort(function(a,b){return a.toLowerCase().localeCompare(b.toLowerCase(),'es');});
+      provs.forEach(function(prov,idx){
+        rowsP.push([ idx===0?byMP[mk].__label:'', prov, byMP[mk][prov].toFixed(2), idx===0?monthTot[mk].toFixed(2):'' ]);
+      });
+    });
+    var parts=Object.keys(provTot).map(function(k){return {label:k,value:provTot[k]};}).sort(function(a,b){return b.value-a.value;});
+    var summaryP='<div class="pr-sum"><div><b>$'+grand.toFixed(2)+'</b>Total compras</div><div><b>'+parts.length+'</b>Proveedores</div></div>';
+    return {fecha:fecha,title:'Reporte Compras por Proveedor',sub:'',summary:summaryP,preHTML:pieSVG(parts,grand),pie:{parts:parts,total:grand},
+      head:['Mes','Proveedor','Monto USD','Total mes USD'],
+      rows:rowsP,
+      totalRow:['TOTAL GENERAL','',grand.toFixed(2),''],
+      numCols:[2,3],sheet:'Proveedores',file:'ReporteProveedores',colw:[16,24,14,14]};
   }
   if(kind==='freq'){
     var d=statPeriod;
@@ -1981,7 +2163,7 @@ function buildReport(kind){
     if(d===7){
       ev.sort(function(a,b){ return (a.nombre||'').toLowerCase().localeCompare((b.nombre||'').toLowerCase(),'es'); });
       return {fecha:fecha,title:weekTitle(),sub:'',
-        head:['Nombre','Marca','Presentación','Cantidad','Lugar de compra','Precio USD'],
+        head:['Nombre','Marca','Presentación','Cantidad','Proveedor','Precio USD'],
         rows:ev.map(function(e){return [e.nombre,e.marca,e.pres,e.cant,e.lugar,e.precio];}),
         numCols:[3,5],sheet:'Compras semana',file:'ReporteCompra_Semana',colw:[26,16,16,9,20,11]};
     }
@@ -2009,8 +2191,8 @@ function buildReport(kind){
     var rs=document.getElementById('recSel'); var dd=rs?Number(rs.value):30;
     var rr=DB.map(function(p){return {p:p,veces:countWindow(p.compras,dd),q:sumWindow(p.compras,dd)};}).filter(function(x){return x.veces>=2;}).sort(function(a,b){return (b.q-a.q)||(b.veces-a.veces)||azName(a.p,b.p);});
     if(!rr.length){ toast('Sin productos recurrentes en el periodo'); return null; }
-    return {fecha:fecha,title:'Compras Recurrentes',sub:'',
-      head:['Nombre','Marca','Presentación','Tipo','Lugar de compra','Unidades','Precio USD','Última compra'],
+    return {fecha:fecha,title:'Reporte Compras Recurrentes',sub:'',
+      head:['Nombre','Marca','Presentación','Tipo','Proveedor','Unidades','Precio USD','Última compra'],
       rows:rr.map(function(x){return [x.p.nombre,x.p.marca,x.p.presentacion,x.p.tipo||'Producto',x.p.tienda||'',x.q,(x.p.precio!==''&&x.p.precio!=null)?Number(x.p.precio):'',fmtAgo(lastTs(x.p.compras))];}),numCols:[5,6],
       summary:'<div class="pr-sum"><div><b>'+rr.length+'</b>Productos</div></div>',
       foot:'Productos que vuelves a comprar seguido · '+fecha,sheet:'Recurrentes',file:'Recurrentes',colw:[26,16,16,13,18,10,11,16]};
@@ -2019,8 +2201,8 @@ function buildReport(kind){
     var cand=DB.map(function(p){var u=totalC(p.usos),lu=lastTs(p.usos);var ref=(lu!=null)?lu:evTs(p.fecha);return {p:p,u:u,lc:lastTs(p.compras),ref:ref,gap:daysSince(ref)};})
       .filter(function(x){return (x.u===0||(x.gap!=null&&x.gap>=30))&&(Number(x.p.cantidad)||0)>0;}).sort(function(a,b){return azName(a.p,b.p);});
     if(!cand.length){ toast('Todo tu inventario se ha movido recientemente 👍'); return null; }
-    return {fecha:fecha,title:'Inventario sin movimiento',sub:'',
-      head:['Nombre','Marca','Presentación','Tipo','Lugar de compra','Cantidad','Precio USD','Sin usar','Última compra'],
+    return {fecha:fecha,title:'Reporte Inventario sin movimiento',sub:'',
+      head:['Nombre','Marca','Presentación','Tipo','Proveedor','Cantidad','Precio USD','Sin usar','Última compra'],
       rows:cand.map(function(x){return [x.p.nombre,x.p.marca,x.p.presentacion,x.p.tipo||'Producto',x.p.tienda||'',(Number(x.p.cantidad)||0),(x.p.precio!==''&&x.p.precio!=null)?Number(x.p.precio):'',(x.u===0?'desde que se agregó · ':'')+fmtAgo(x.ref),fmtAgo(x.lc)];}),numCols:[5,6],
       summary:'<div class="pr-sum"><div><b>'+cand.length+'</b>Productos</div></div>',
       foot:'Productos sin movimiento reciente · '+fecha,sheet:'Sin movimiento',file:'SinMovimiento',colw:[26,16,16,13,18,9,11,22,16]};
@@ -2038,8 +2220,8 @@ function reportHeader(title,sub,fecha){
     ? '<img src="'+AJ.logo+'" alt="logo" style="max-width:100%;max-height:100%;object-fit:contain">'
     : '<svg viewBox="0 0 24 24"><path d="M3 7h13l1.5 4H21a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/><path d="M3 7v9a1 1 0 0 0 1 1h1"/><circle cx="8" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M7 7V4h6v3"/></svg>';
   return '<div class="pr-head"><div class="pr-mark'+(AJ.logo?' pr-logo':'')+'">'+markInner+'</div>'+
-    '<div class="pr-title"><h1>'+(empresa?esc(empresa)+' — '+esc(title):esc(title))+'</h1>'+(sub?'<p>'+esc(sub)+'</p>':'')+'</div>'+
-    '<div class="pr-meta">Generado<br>'+esc(fecha)+'</div></div>';
+    '<h1 class="pr-co">'+esc(empresa)+'</h1></div>'+
+    '<div class="pr-subt">'+esc(title)+'</div>';
 }
 function nowStr(){ return new Date().toLocaleString('es',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
 function printReport(){ out('inv','pdf'); }
@@ -2068,7 +2250,7 @@ function enableIconBadge(){
    COMPARTIR / RESPALDAR  +  IMPORTAR / SINCRONIZAR
 ═══════════════════════════════════════════════════════ */
 function backupBlob(){
-  const payload={app:'VAUR',version:23,exported:new Date().toISOString(),count:DB.length,productos:DB};
+  const payload={app:'VAUR',version:24,exported:new Date().toISOString(),count:DB.length,productos:DB};
   return new Blob([JSON.stringify(payload)],{type:'application/json'});
 }
 function checkBackupReminder(){
